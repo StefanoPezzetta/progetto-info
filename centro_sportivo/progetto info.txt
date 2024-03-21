@@ -1,0 +1,37 @@
+1 pagina:
+
+nome centro sportivo
+informazioni(via, paese, recapito telefonico)
+login con la mail(necessaria per prenotare, non per guardare)
+registrazione
+visualizza campi
+
+2 pagina
+registrazione
+
+3pagina
+login
+
+4 pagina
+informazioni più dettagliate
+
+5 pagina
+campi:
+divisi in
+sport
+calcio
+calcetto
+tennis
+padel
+basket
+piscina
+
+
+
+query:
+create table utente(id int auto_increment, mail varchar(30),
+pw varchar(30), nome varchar(20), cognome varchar(20), data_nascita date, PRIMARY KEY(id))
+
+create table prenotazione
+
+
