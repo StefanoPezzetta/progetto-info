@@ -21,8 +21,5 @@ session_start();
     <form action="prenotazione_campi.php">
         <input type="submit" value = "prenota un campo">
     </form>
-    <form action="informazioni.php">
-        <input type="submit" value="informazioni">
-    </form>
-</body>
+    <a href="informazioni.php">Chi siamo?</a></body>
 </html>
