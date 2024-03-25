@@ -21,11 +21,12 @@ if ($risultato->num_rows > 0){
 }
 
 else{
+    $pw = password_hash($_POST["pw"], PASSWORD_DEFAULT);
     $stmt = $mydb->prepare("INSERT INTO utente (mail, pw, nome, cognome, data_nascita) VALUES (?, ?, ?, ?, ?)");
     $stmt->bind_param("sssss", $_POST["mail"], $pw, $_POST["nome"], $_POST["cognome"], $_POST["data_nascita"]);
     $stmt->execute();
     $stmt->close();
-    $_SESSION["registrato"] = 1;
+   /*  $_SESSION["registrato"] = 1; */
     header("Location: prenotazione_campi.php");
 }
 

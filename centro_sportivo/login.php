@@ -1,5 +1,12 @@
 <?php
 session_start();
+$errorMessage = "";
+if(isset($_SESSION['registrato']) && $_SESSION['registrato'] == 1){
+    // Se è impostato a 1, mostra il messaggio di errore
+    $errorMessage = "<p>Email o password errati</p>";
+}else{
+    $errorMessage = "";
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,10 +17,11 @@ session_start();
 </head>
 <body>
     <h1>INSERISCI LE TUE CREDENZIALI</h1>
-    <form action="registra_script.php" method="POST">
+    <form action="login_script.php" method="POST">
         <input type="text" name="mail" id="mail" placeholder="mail">
         <input type="text" name="password" id="password" placeholder="pw">
         <input type="submit" value="conferma">
     </form>
+    <?php echo $errorMessage; ?>
 </body>
 </html>

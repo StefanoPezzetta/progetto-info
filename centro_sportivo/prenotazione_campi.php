@@ -1,9 +1,5 @@
 <?php
 session_start();
-if($_SESSION["registrato"]==0){
-    echo '<script>alert(EMAIL GIA IN USO);</script>';
-}
-else{
     ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,20 +11,20 @@ else{
 <body>
     <h1>PRENOTA UN CAMPO</h1>
 
-    <form action="calcio.php" method= "POST">
+    <form action="calcioCal.php" method= "POST">
         <input type="submit" value = "calcio">
     </form>
-    <form action="tennis.php" method = "POST">
+    <form action="tennisCal.php" method = "POST">
         <input type="submit" value = "tennis">
     </form>
-    <form action="padel.php" method = "post">
-        <input type="submit" value = "padel.php">
+    <form action="padelCal.php" method = "post">
+        <input type="submit" value = "padel">
     </form>
-    <form action="calcetto.php" method = "POST">
+    <form action="calcettoCal.php" method = "POST">
         <input type="submit" value = "calcetto">
     </form>
 </body>
 </html>
 <?php
-}
+
 ?>
