@@ -52,59 +52,51 @@
     // Aggiorna il testo del mese e dell'anno
     monthYearElement.textContent = `${meseNomi[mese]} ${anno}`;
   }
-  function apriPopup(anno, mese, giorno) {
-  reciveDataFromServer(`${anno}`, `${mese}`, `${giorno}`);
- /*  console.log(`${anno}`);
-    console.log(`${mese}`);
-    console.log(`${giorno}`); */
-    var url = "backendCal.php";
-    var nomePopup = "popupExample";
-    var dimensioniPopup = "width=600,height=400";
-    window.open(url, nomePopup, dimensioniPopup);
+
+
+  async function reciveDataFromServer(anno, mese, giorno) {
+    const dataToSend = {
+        anno: anno,
+        mese: mese,
+        giorno: giorno,
+    };
+    console.log(dataToSend);
+    try {
+        const response = await fetch('backendCal.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataToSend),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
+        }
+
+        // Restituisci true se la richiesta ha avuto successo
+        return true;
+    } catch (error) {
+        console.error('Errore nella fetch:', error.message);
+        // Restituisci false se si verifica un errore
+        return false;
+    }
 }
 
 
-
-
-async function reciveDataFromServer(anno, mese, giorno) {
-    console.log(`${anno}`);
-    console.log(`${mese}`);
-    console.log(`${giorno}`);
-        const dataToSend = {
-            anno: anno,
-            mese: mese,
-            giorno: giorno,
-         };
-         console.log(dataToSend);
-
-        try {
-            const response = await fetch('backendCal.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(dataToSend),
-            });
-
-            if (!response.ok) {
-                throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
-            }
-
-            const contentType = response.headers.get('content-type');
-            if (contentType && contentType.includes('application/json')) {
-                const responseData = await response.json();
-                console.log('Dati ricevuti dal server:', responseData);
-
+  function apriPopup(anno, mese, giorno) {
+    reciveDataFromServer(`${anno}`, `${mese}`, `${giorno}`)
+        .then((success) => {
+            if (success) {
+                var url = "backendCal.php";
+                var nomePopup = "popupExample";
+                var dimensioniPopup = "width=600,height=400";
+                window.open(url, nomePopup, dimensioniPopup);
             } else {
-                alert("errore");
-                console.log('Nessun dato risultante.');
+                console.log("Errore nella richiesta al server. Il popup non sarà aperto.");
             }
-        } catch (error) {
-            console.error('Errore nella fetch:', error.message);
-        }
-    }
-
-
+        });
+  }
   function mostraData(anno, mese, giorno) {
    /*  console.log(`${anno}`);
     console.log(`${mese}`);

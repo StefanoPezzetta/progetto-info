@@ -11,7 +11,7 @@ session_start();
 <body>
     <h1>PRENOTA UN CAMPO</h1>
 
-    <form action="calcioCal.html" method= "POST">
+    <form action="calcioCal.php" method= "POST">
         <input type="submit" value = "calcio">
     </form>
     <form action="tennisCal.php" method = "POST">

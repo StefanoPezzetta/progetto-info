@@ -1,29 +1,17 @@
 <?php
-session_start();
-require("config.php"); //parametri di connessione
-$mydb = new mysqli(SERVER, UTENTE, PASSWORD, DATABASE);
-if ($mydb->connect_errno) {
-    echo "Errore nella connessione a MySQL: (" . $mydb->connect_errno . ") " . $mydb->connect_error;
-    exit();
+// Retrieve the raw POST data
+$jsonData = file_get_contents('php://input');
+// Decode the JSON data into a PHP associative array
+$data = json_decode($jsonData, true);
+// Check if decoding was successful
+if ($data !== null) {
+   // Access the data and perform operations
+   $anno = $data['anno'];
+   $mese = $data['mese'];
+   $giorno = $data['giorno'];
+   // Perform further processing or respond to the request
+} else {
+   // JSON decoding failed
+   http_response_code(400); // Bad Request
+   echo "Invalid JSON data";
 }
-$data = json_decode(file_get_contents('php://input'), true);
-if (isset($data['anno']) && isset($data['mese']) && isset($data['giorno'])) {
-    $anno = $data['anno'];
-    $mese = $data['mese'];
-    $giorno = $data['giorno'];
-}
-?>
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <p>POPUP</p>
-    <p><?php echo $anno?></p>
-</body>
-</html>
