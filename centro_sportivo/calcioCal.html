@@ -40,7 +40,7 @@
         } else if (giorno > giorniNelMese) {
           break;
         } else {
-          html += `<td onclick="mostraData(/* ${anno}, ${mese + 1}, ${giorno} */)">${giorno}</td>`;
+          html += `<td onclick="mostraData(${anno}, ${mese + 1}, ${giorno})">${giorno}</td>`;
           giorno++;
         }
       }
@@ -53,25 +53,29 @@
     monthYearElement.textContent = `${meseNomi[mese]} ${anno}`;
   }
   function apriPopup(anno, mese, giorno) {
-/*     reciveDataFromServer(`${anno}`, `${mese}`, `${giorno}`);
- */    console.log(anno);
-    console.log(mese);
-    console.log(giorno);
+  reciveDataFromServer(`${anno}`, `${mese}`, `${giorno}`);
+ /*  console.log(`${anno}`);
+    console.log(`${mese}`);
+    console.log(`${giorno}`); */
     var url = "backendCal.php";
     var nomePopup = "popupExample";
     var dimensioniPopup = "width=600,height=400";
-   // window.open(url, nomePopup, dimensioniPopup);
+    window.open(url, nomePopup, dimensioniPopup);
 }
 
 
 
 
 async function reciveDataFromServer(anno, mese, giorno) {
+    console.log(`${anno}`);
+    console.log(`${mese}`);
+    console.log(`${giorno}`);
         const dataToSend = {
             anno: anno,
             mese: mese,
             giorno: giorno,
          };
+         console.log(dataToSend);
 
         try {
             const response = await fetch('backendCal.php', {
@@ -102,13 +106,13 @@ async function reciveDataFromServer(anno, mese, giorno) {
 
 
   function mostraData(anno, mese, giorno) {
-    console.log(`${anno}`);
+   /*  console.log(`${anno}`);
     console.log(`${mese}`);
-    console.log(`${giorno}`);
-/*     alert(`Hai cliccato il ${anno}-${mese}-${giorno}`);
- */
-/*     apriPopup(`${anno}`, `${mese}`, `${giorno}`);
- */  }
+    console.log(`${giorno}`) */; 
+/*      alert(`Hai cliccato il ${anno}-${mese}-${giorno}`);
+ */ 
+    apriPopup(`${anno}`, `${mese}`, `${giorno}`);
+    }
 
   function scorriMese(delta) {
     meseCorrente += delta;

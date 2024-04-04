@@ -1,12 +1,19 @@
 <?php
 session_start();
-$errorMessage = "";
-if(isset($_SESSION['emailInUso']) && $_SESSION['emailInUso'] == 1) {
-    // Se è impostato a 1, mostra il messaggio di errore
-    $errorMessage = "<p>Email già in uso</p>";
-}
-?>
 
+
+?>
+<script>
+  // Funzione per aprire il popup
+  function openPopup() {
+    document.getElementById('popupOverlay').style.display = 'flex';
+  }
+
+  // Funzione per chiudere il popup
+  function closePopup() {
+    document.getElementById('popupOverlay').style.display = 'none';
+  }
+</script>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -16,10 +23,17 @@ if(isset($_SESSION['emailInUso']) && $_SESSION['emailInUso'] == 1) {
     <title>Document</title>
 </head>
 <body>
+    <?php
+    if($_SESSION["emailInUso"]==1){
+/*         openPopup();
+ */    }
+    ?>
     <h1>INSERISCI LE TUE CREDENZIALI</h1>
     <table>        
     <div class="popup-overlay" id="popupOverlay">
     <div class="popup-content">
+        <p>Email già in uso</p>
+        <button onclick="closePopup()">Close</button>
     </div>
     </div>
     <form action="registra_script.php" method="POST">
@@ -36,7 +50,28 @@ if(isset($_SESSION['emailInUso']) && $_SESSION['emailInUso'] == 1) {
         <input type="submit" value="conferma">
     </form>
     </table>
-    <?php echo $errorMessage; ?>
     
 </body>
+<style>
+  /* Stili per il popup */
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Trasparenza */
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Assicura che il popup sia al di sopra di tutti gli altri elementi */
+  }
+
+  .popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+  }
+</style>
 </html>

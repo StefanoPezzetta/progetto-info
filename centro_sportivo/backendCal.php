@@ -6,6 +6,12 @@ if ($mydb->connect_errno) {
     echo "Errore nella connessione a MySQL: (" . $mydb->connect_errno . ") " . $mydb->connect_error;
     exit();
 }
+$data = json_decode(file_get_contents('php://input'), true);
+if (isset($data['anno']) && isset($data['mese']) && isset($data['giorno'])) {
+    $anno = $data['anno'];
+    $mese = $data['mese'];
+    $giorno = $data['giorno'];
+}
 ?>
 
 
@@ -18,5 +24,6 @@ if ($mydb->connect_errno) {
 </head>
 <body>
     <p>POPUP</p>
+    <p><?php echo $anno?></p>
 </body>
 </html>
