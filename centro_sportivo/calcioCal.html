@@ -55,36 +55,51 @@
 
 
   async function reciveDataFromServer(anno, mese, giorno) {
+    if(giorno.length == 1){
+      giorno = "0"+giorno;
+    };
+    if(mese.length == 1){
+      mese = "0"+mese;
+    };
+    console.log(giorno);
     const dataToSend = {
         anno: anno,
         mese: mese,
         giorno: giorno,
-    };
-    console.log(dataToSend);
+      }
+      console.log(dataToSend);
+
     try {
-        const response = await fetch('backendCal.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(dataToSend),
-        });
+    const response = await fetch('backendCal.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
+            // Altri eventuali header necessari possono essere aggiunti qui
+        },
+        body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
+    });
 
-        if (!response.ok) {
-            throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
-        }
-
-        // Restituisci true se la richiesta ha avuto successo
-        return true;
-    } catch (error) {
-        console.error('Errore nella fetch:', error.message);
-        // Restituisci false se si verifica un errore
-        return false;
+    // Gestione degli errori HTTP
+    if (!response.ok) {
+        throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
     }
-}
 
+    // Controllo del tipo di contenuto
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+        const responseData = await response.json();
+        console.log('Dati ricevuti dal server:', responseData);
+        // Puoi fare ulteriori operazioni con i dati ricevuti, se necessario
+    } else {
+        console.error('La risposta non contiene dati JSON');
+    }
 
-  function apriPopup(anno, mese, giorno) {
+    } catch (error) {
+      console.error('Errore nella fetch:', error.message);
+    }
+    };
+
+ /*  function apriPopup(anno, mese, giorno) {
     reciveDataFromServer(`${anno}`, `${mese}`, `${giorno}`)
         .then((success) => {
             if (success) {
@@ -96,14 +111,14 @@
                 console.log("Errore nella richiesta al server. Il popup non sarà aperto.");
             }
         });
-  }
+  } */
   function mostraData(anno, mese, giorno) {
    /*  console.log(`${anno}`);
     console.log(`${mese}`);
     console.log(`${giorno}`) */; 
 /*      alert(`Hai cliccato il ${anno}-${mese}-${giorno}`);
  */ 
-    apriPopup(`${anno}`, `${mese}`, `${giorno}`);
+     reciveDataFromServer(`${anno}`, `${mese}`, `${giorno}`);
     }
 
   function scorriMese(delta) {
