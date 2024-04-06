@@ -35,3 +35,9 @@ pw varchar(30), nome varchar(20), cognome varchar(20), data_nascita date, PRIMAR
 create table prenotazione
 
 
+
+
+per gli orari:
+    gli serve il giorno
+
+

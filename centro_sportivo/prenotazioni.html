@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>PAGINA DI PRENOTAZIONI</h1>
+    <button onclick="prenotaCampo()">PRENOTA UN CAMPO</button>
+    <label for="orarioSelect">Seleziona orario:</label>
+    <select id="orarioSelect" onchange="popolaOrari()">
+        <!-- Opzioni del select verranno popolate dinamicamente -->
+    </select>
+
+    
+    <p>nel seguente giorno sono state effettuate le seguenti preotazioni</p>
+
+
+
+    <script>
+        // Recupera i dati memorizzati nel sessionStorage
+        const responseArrayJSON = sessionStorage.getItem('responseArray');
+        const responseArray = JSON.parse(responseArrayJSON);
+        const dataToSendJSON = sessionStorage.getItem('dataToSend');
+        const dataToSend = JSON.parse(dataToSendJSON);
+        // Fai qualcosa con i dati...
+        console.log(responseArray);
+        console.log(dataToSend);
+
+        responseArray.forEach(element => {
+            document.write("<p> Campo prenotato: " + element['nomeCampo'] + " dalle " + element['oraInizio'] + " alle " + element['oraFine'] + "</p>")
+
+        });
+        function prenotaCampo(){
+
+        }
+        async function popolaOrari(dataToSend) {
+    const dataToSend = dataToSend;
+      
+      console.log(dataToSend);
+
+    try {
+      const response = await fetch('backendOrariCalcetto.php', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
+              // Altri eventuali header necessari possono essere aggiunti qui
+          },
+          body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
+      });
+
+      // Gestione degli errori HTTP
+      if (!response.ok) {
+          throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
+      }
+
+      // Controllo del tipo di contenuto
+      /* const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+          const responseData = await response.json();
+          if (responseData.length === 0) {
+                console.log('In questo giorno non sono state effettuate prenotazioni');
+            } else {
+                
+              }
+      } else {
+          console.error('La risposta non contiene dati JSON');
+      } */
+
+    } catch (error) {
+      console.error('Errore nella fetch:', error.message);
+    }
+    };
+    </script>
+</body>
+</html>

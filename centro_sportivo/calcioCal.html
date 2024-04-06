@@ -52,6 +52,9 @@
     // Aggiorna il testo del mese e dell'anno
     monthYearElement.textContent = `${meseNomi[mese]} ${anno}`;
   }
+  function mostraData(anno, mese, giorno) {
+     reciveDataFromServer(`${anno}`, `${mese}`, `${giorno}`);
+    }
 
 
   async function reciveDataFromServer(anno, mese, giorno) {
@@ -61,65 +64,53 @@
     if(mese.length == 1){
       mese = "0"+mese;
     };
-    console.log(giorno);
     const dataToSend = {
         anno: anno,
         mese: mese,
-        giorno: giorno,
+        giorno: giorno
       }
       console.log(dataToSend);
 
     try {
-    const response = await fetch('backendCal.php', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
-            // Altri eventuali header necessari possono essere aggiunti qui
-        },
-        body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
-    });
+      const response = await fetch('backendCalcetto.php', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
+              // Altri eventuali header necessari possono essere aggiunti qui
+          },
+          body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
+      });
 
-    // Gestione degli errori HTTP
-    if (!response.ok) {
-        throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
-    }
+      // Gestione degli errori HTTP
+      if (!response.ok) {
+          throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
+      }
 
-    // Controllo del tipo di contenuto
-    const contentType = response.headers.get('content-type');
-    if (contentType && contentType.includes('application/json')) {
-        const responseData = await response.json();
-        console.log('Dati ricevuti dal server:', responseData);
-        // Puoi fare ulteriori operazioni con i dati ricevuti, se necessario
-    } else {
-        console.error('La risposta non contiene dati JSON');
-    }
+      // Controllo del tipo di contenuto
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+          const responseData = await response.json();
+          if (responseData.length === 0) {
+                console.log('In questo giorno non sono state effettuate prenotazioni');
+            } else {
+                console.log('Dati ricevuti dal server:', responseData);
+                $responseArray = responseData;
+                console.log($responseArray);
+                $stringaJSON = JSON.stringify($responseArray);
+                sessionStorage.setItem('responseArray', $stringaJSON);
+                $dataStringaJSON = JSON.stringify(dataToSend);
+                sessionStorage.setItem('dataToSend', $dataStringaJSON);
+                // Dopo aver ottenuto i dati dal server
+                window.location.href = `prenotazioni.html`;
+              }
+      } else {
+          console.error('La risposta non contiene dati JSON');
+      }
 
     } catch (error) {
       console.error('Errore nella fetch:', error.message);
     }
-    };
-
- /*  function apriPopup(anno, mese, giorno) {
-    reciveDataFromServer(`${anno}`, `${mese}`, `${giorno}`)
-        .then((success) => {
-            if (success) {
-                var url = "backendCal.php";
-                var nomePopup = "popupExample";
-                var dimensioniPopup = "width=600,height=400";
-                window.open(url, nomePopup, dimensioniPopup);
-            } else {
-                console.log("Errore nella richiesta al server. Il popup non sarà aperto.");
-            }
-        });
-  } */
-  function mostraData(anno, mese, giorno) {
-   /*  console.log(`${anno}`);
-    console.log(`${mese}`);
-    console.log(`${giorno}`) */; 
-/*      alert(`Hai cliccato il ${anno}-${mese}-${giorno}`);
- */ 
-     reciveDataFromServer(`${anno}`, `${mese}`, `${giorno}`);
-    }
+    };  
 
   function scorriMese(delta) {
     meseCorrente += delta;
