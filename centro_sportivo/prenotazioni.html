@@ -9,7 +9,11 @@
     <h1>PAGINA DI PRENOTAZIONI</h1>
     <button onclick="prenotaCampo()">PRENOTA UN CAMPO</button>
     <label for="orarioSelect">Seleziona orario:</label>
-    <select id="orarioSelect" onchange="popolaOrari()">
+    <select id="orarioSelect" onchange="selezionaFine(this.value)">
+        <!-- Opzioni del select verranno popolate dinamicamente -->
+    </select>
+    <label for="orarioSelectFinish">Seleziona orario di fine:</label>
+    <select id="orarioSelectFinish">
         <!-- Opzioni del select verranno popolate dinamicamente -->
     </select>
 
@@ -19,59 +23,105 @@
 
 
     <script>
+        let responseData = "";
         // Recupera i dati memorizzati nel sessionStorage
         const responseArrayJSON = sessionStorage.getItem('responseArray');
         const responseArray = JSON.parse(responseArrayJSON);
-        const dataToSendJSON = sessionStorage.getItem('dataToSend');
-        const dataToSend = JSON.parse(dataToSendJSON);
+        const dataGiornoJSON = sessionStorage.getItem('dataGiornoSelected');
+        const dataGiorno = JSON.parse(dataGiornoJSON);
         // Fai qualcosa con i dati...
         console.log(responseArray);
-        console.log(dataToSend);
+        console.log(dataGiorno);
 
         responseArray.forEach(element => {
-            document.write("<p> Campo prenotato: " + element['nomeCampo'] + " dalle " + element['oraInizio'] + " alle " + element['oraFine'] + "</p>")
-
+            document.write("<p> Campo prenotato: " + element['nomeCampo'] + " dalle " + element['oraInizio'] + " alle " + element['oraFine'] + "</p>");
         });
-        function prenotaCampo(){
 
-        }
-        async function popolaOrari(dataToSend) {
-    const dataToSend = dataToSend;
-      
-      console.log(dataToSend);
+        // Utilizza una promessa per garantire l'esecuzione di popolaOrari dopo il completamento del forEach
+        new Promise((resolve, reject) => {
+            // Esegui il resolve() dopo aver completato il forEach
+            resolve();
+        }).then(() => {
+            // Esegui popolaOrari(dataGiorno) dopo il completamento del forEach
+            popolaOrari(dataGiorno);
+        });
 
-    try {
-      const response = await fetch('backendOrariCalcetto.php', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
-              // Altri eventuali header necessari possono essere aggiunti qui
-          },
-          body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
-      });
+         /* function prenotaCampo(){
 
-      // Gestione degli errori HTTP
-      if (!response.ok) {
-          throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
-      }
+        }  */
+         async function popolaOrari(dataGiorno) {
+            const dataToSend = {
+                anno: dataGiorno["anno"],
+                mese: dataGiorno["mese"],
+                giorno: dataGiorno["giorno"]
+            }
+            
+            console.log(dataToSend);
 
-      // Controllo del tipo di contenuto
-      /* const contentType = response.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-          const responseData = await response.json();
-          if (responseData.length === 0) {
-                console.log('In questo giorno non sono state effettuate prenotazioni');
-            } else {
+            try {
+            const response = await fetch('backendOrariCalcetto.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
+                    // Altri eventuali header necessari possono essere aggiunti qui
+                },
+                body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
+            });
+
+            // Gestione degli errori HTTP
+            if (!response.ok) {
+                throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
+            } 
+
+            // Controllo del tipo di contenuto
+             const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                responseData = await response.json();
+                console.log(responseData);
+                // Popola le opzioni della select con i risultati della fetch
+                const select = document.getElementById('orarioSelect');
+                select.innerHTML = ''; // Pulisce le opzioni precedenti
+
+                // Itera sull'array associativo e aggiungi le ore disponibili come opzioni della select
+                responseData["merged_result"].forEach(ora => {
+                    const option = document.createElement('option');
+                    option.textContent = ora.ora; // Assumi che l'oggetto abbia una proprietà 'ora'
+                    select.appendChild(option);
+            });
                 
-              }
-      } else {
-          console.error('La risposta non contiene dati JSON');
-      } */
+            } else {
+                console.error('La risposta non contiene dati JSON');
+            } 
 
-    } catch (error) {
-      console.error('Errore nella fetch:', error.message);
-    }
-    };
+             } catch (error) {
+            console.error('Errore nella fetch:', error.message);
+            }
+    }; 
+    function selezionaFine(orarioSelezionato){
+        const selectFine = document.getElementById("orarioSelectFinish");
+        selectFine.innerHTML = '';
+        if(orarioSelezionato!==null){
+            // Orario iniziale
+
+            // Converti l'orario in secondi
+            var timeParts = orarioSelezionato.split(':');
+            var seconds = (+timeParts[0]) * 3600 + (+timeParts[1]) * 60 + (+timeParts[2]);
+
+            // Aggiungi 30 minuti (1800 secondi)
+            seconds += 1800;
+
+            // Converti nuovamente i secondi in formato di orario
+            var hours = Math.floor(seconds / 3600);
+            var minutes = Math.floor((seconds - (hours * 3600)) / 60);
+            var secs = seconds - (hours * 3600) - (minutes * 60);
+
+            // Formatta il risultato
+            var newTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + secs.toString().padStart(2, '0');
+
+            console.log("Nuovo orario:", newTime);
+                    }
+
+                } 
     </script>
 </body>
 </html>

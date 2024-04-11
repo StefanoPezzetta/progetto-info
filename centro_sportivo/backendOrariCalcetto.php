@@ -28,37 +28,107 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $giorno = $data['giorno'];
       $giornoPr = "$anno-$mese-$giorno";
 
-      $stmt = $mydb->prepare("SELECT campo.nome, campo.sport, prenotazione.ora_inizio, prenotazione.ora_fine 
-      FROM prenotazione join campo on prenotazione.fkCampo = campo.id 
-      where prenotazione.giorno = ? AND campo.sport = 'calcetto'
-      ORDER BY prenotazione.ora_inizio");
+      $stmt = $mydb->prepare("SELECT orario.ora
+      FROM orario
+      LEFT JOIN (
+          SELECT prenotazione.ora_inizio, prenotazione.ora_fine
+          FROM prenotazione
+          JOIN campo ON prenotazione.fkCampo = campo.id
+          WHERE prenotazione.giorno = ?
+              AND campo.nome = 'calcetto1'
+      ) AS prenotazioni
+      ON orario.ora >= prenotazioni.ora_inizio AND orario.ora < prenotazioni.ora_fine
+      WHERE prenotazioni.ora_inizio IS NULL;");
       $stmt->bind_param("s", $giornoPr);
       // Esegui la query SQL
       if ($stmt->execute()) {
-        $stmt->bind_result($nomeCampo, $sportCampo, $oraInizio, $oraFine);
+        $stmt->bind_result($ora);
         while ($stmt->fetch()) {
-            $result[] = [
-                "nomeCampo" => $nomeCampo,
-                "sportCampo"=> $sportCampo,
-                "oraInizio" => $oraInizio,
-                "oraFine" => $oraFine,
+            $result1[] = [
+                "ora" => $ora,
             ];
         }
         $stmt->close();
       } else {
             // Gestione degli errori durante l'esecuzione della query
-            $result = [
+            $result1 = [
                 "error" => "Errore durante l'esecuzione della query: " . $mydb->errno . " - " . $mydb->error
             ];
+            
+        }
+        /*  if (isset($result1) && count($result1) > 0) {
+                echo json_encode($result1);
+            } else {
+                // Nessun risultato trovato
+                echo json_encode(["error" => "Nessuna prenotazione trovata per il giorno specificato"]);
+            } */
+ 
+
+        $stmt2 = $mydb->prepare("SELECT orario.ora
+        FROM orario
+        LEFT JOIN (
+            SELECT prenotazione.ora_inizio, prenotazione.ora_fine
+            FROM prenotazione
+            JOIN campo ON prenotazione.fkCampo = campo.id
+            WHERE prenotazione.giorno = ?
+                AND campo.nome = 'calcetto2'
+        ) AS prenotazioni
+        ON orario.ora >= prenotazioni.ora_inizio AND orario.ora < prenotazioni.ora_fine
+        WHERE prenotazioni.ora_inizio IS NULL;");
+      $stmt2->bind_param("s", $giornoPr);
+      // Esegui la query SQL
+      if ($stmt2->execute()) {
+        $stmt2->bind_result($ora);
+        while ($stmt2->fetch()) {
+            $result2[] = [
+                "ora" => $ora,
+            ];
+        }
+        $stmt2->close();
+      } else {
+            // Gestione degli errori durante l'esecuzione della query
+            $result2 = [
+                "error" => "Errore durante l'esecuzione della query: " . $mydb->errno . " - " . $mydb->error
+            ];
+            
         }
 
-    // Verifica se $result è definito e contiene dati
-    if (isset($result) && count($result) > 0) {
+
+        $merged_result = array_merge($result1, $result2);
+        $merged_result = array_unique($merged_result, SORT_REGULAR);
+        function compareTime($a, $b) {
+            return strtotime($a['ora']) - strtotime($b['ora']);
+        }
+        
+        // Ordina l'array combinato utilizzando la funzione di confronto personalizzata
+        usort($merged_result, 'compareTime') ;
+
+        // Invia i dati JSON con l'array unito
+        echo json_encode(["merged_result" => array_values($merged_result)]);
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /* // Verifica se $result è definito e contiene dati
+    if (isset($result1) && count($result1) > 0) {
         echo json_encode($result);
     } else {
         // Nessun risultato trovato
-        echo json_encode(["error" => "Nessuna prenotazione trovata per il giorno specificato"]);
-    }
+        echo json_encode(["error" => "Nessun orario disponibile"]);
+    } */
 
     }
 }

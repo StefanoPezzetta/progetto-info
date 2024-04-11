@@ -41,3 +41,60 @@ per gli orari:
     gli serve il giorno
 
 
+
+SELECT orario.ora FROM orario WHERE orario.ora NOT IN(SELECT prenotazione.ora_inizio FROM prenotazione JOIN campo ON prenotazione.fkCampo=campo.id WHERE campo.sport = 'tennis');
+
+SELECT orario.ora from orario where orario.ora>=(SELECT prenotazione.ora_inizio FROM prenotazione where prenotazione.id = 1) AND orario.ora<=(SELECT prenotazione.ora_fine FROM prenotazione where prenotazione.id = 1);
+
+
+SELECT orario.ora from orario where orario.ora>=(SELECT prenotazione.ora_inizio FROM prenotazione JOIN campo on prenotazione.fkCampo = campo.id where campo.nome = "tennis1") AND orario.ora<=(SELECT prenotazione.ora_fine FROM prenotazione JOIN campo on prenotazione.fkCampo = campo.id where campo.nome = "tennis1");
+
+
+
+
+
+
+
+
+SELECT orario.ora
+FROM orario
+LEFT JOIN (
+    SELECT prenotazione.ora_inizio, prenotazione.ora_fine
+    FROM prenotazione
+    JOIN campo ON prenotazione.fkCampo = campo.id
+    WHERE prenotazione.giorno = "2024-04-19"
+        AND campo.nome = 'calcetto1'
+) AS prenotazioni
+ON orario.ora >= prenotazioni.ora_inizio AND orario.ora < prenotazioni.ora_fine
+WHERE prenotazioni.ora_inizio IS NULL;
+
+
+
+algoritmo per l'orario di fine:
+    VERIFICA SE L'ORARIO PIù 30 MIN è PRESENTE NELL'ARRAY, SE ESSA è PRESENTE NEL'ARRAY LO  AGGIUNGE 30 MIN ALL'ORA SELEZIONATA E RIPETE, SE ESSA NON è PRESENTE AGGIUNGE 30 E SI FERMA
+
+
+
+
+    // Orario iniziale
+var orario = "11:00:00";
+
+// Converti l'orario in secondi
+var timeParts = orario.split(':');
+var seconds = (+timeParts[0]) * 3600 + (+timeParts[1]) * 60 + (+timeParts[2]);
+
+// Aggiungi 30 minuti (1800 secondi)
+seconds += 1800;
+
+// Converti nuovamente i secondi in formato di orario
+var hours = Math.floor(seconds / 3600);
+var minutes = Math.floor((seconds - (hours * 3600)) / 60);
+var secs = seconds - (hours * 3600) - (minutes * 60);
+
+// Formatta il risultato
+var newTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + secs.toString().padStart(2, '0');
+
+console.log("Nuovo orario:", newTime);
+
+
+DOVRAI METTERE QUESTO IN UN DO WHILE, TRASFORMARE IN SECONDI, AGGIUNGERE 30, RITRASFORMARE E VERIFICARE, IN CASO RIFARLO(vedi su)

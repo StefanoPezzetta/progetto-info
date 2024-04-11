@@ -99,7 +99,7 @@
                 $stringaJSON = JSON.stringify($responseArray);
                 sessionStorage.setItem('responseArray', $stringaJSON);
                 $dataStringaJSON = JSON.stringify(dataToSend);
-                sessionStorage.setItem('dataToSend', $dataStringaJSON);
+                sessionStorage.setItem('dataGiornoSelected', $dataStringaJSON);
                 // Dopo aver ottenuto i dati dal server
                 window.location.href = `prenotazioni.html`;
               }
