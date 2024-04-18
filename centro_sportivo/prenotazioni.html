@@ -9,7 +9,7 @@
     <h1>PAGINA DI PRENOTAZIONI</h1>
     <button onclick="prenotaCampo()">PRENOTA UN CAMPO</button>
     <label for="orarioSelect">Seleziona orario:</label>
-    <select id="orarioSelect" onchange="selezionaFine(this.value)">
+    <select id="orarioSelect" onchange="selezionaFine(this.value, this.option)">
         <!-- Opzioni del select verranno popolate dinamicamente -->
     </select>
     <label for="orarioSelectFinish">Seleziona orario di fine:</label>
@@ -97,12 +97,11 @@
             console.error('Errore nella fetch:', error.message);
             }
     }; 
-    function selezionaFine(orarioSelezionato){
+    function selezionaFine(orarioSelezionato, option){
         const selectFine = document.getElementById("orarioSelectFinish");
         selectFine.innerHTML = '';
-        if(orarioSelezionato!==null){
-            // Orario iniziale
-
+        do{
+            if(orarioSelezionato!==null){
             // Converti l'orario in secondi
             var timeParts = orarioSelezionato.split(':');
             var seconds = (+timeParts[0]) * 3600 + (+timeParts[1]) * 60 + (+timeParts[2]);
@@ -117,9 +116,15 @@
 
             // Formatta il risultato
             var newTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + secs.toString().padStart(2, '0');
+            const option = document.createElement('option');
+            option.textContent = newTime; // Assumi che l'oggetto abbia una proprietà 'ora'
+            selectFine.appendChild(option);
 
             console.log("Nuovo orario:", newTime);
                     }
+
+        }while(newTime )
+        
 
                 } 
     </script>
