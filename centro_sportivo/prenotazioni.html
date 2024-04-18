@@ -7,9 +7,9 @@
 </head>
 <body>
     <h1>PAGINA DI PRENOTAZIONI</h1>
-    <button onclick="prenotaCampo()">PRENOTA UN CAMPO</button>
+    <button onclick="prenotaCampo(dataGiorno)">PRENOTA UN CAMPO</button>
     <label for="orarioSelect">Seleziona orario:</label>
-    <select id="orarioSelect" onchange="selezionaFine(this.value, this.option)">
+    <select id="orarioSelect" onchange="selezionaFine(this.value)">
         <!-- Opzioni del select verranno popolate dinamicamente -->
     </select>
     <label for="orarioSelectFinish">Seleziona orario di fine:</label>
@@ -23,33 +23,115 @@
 
 
     <script>
-        let responseData = "";
-        // Recupera i dati memorizzati nel sessionStorage
-        const responseArrayJSON = sessionStorage.getItem('responseArray');
-        const responseArray = JSON.parse(responseArrayJSON);
-        const dataGiornoJSON = sessionStorage.getItem('dataGiornoSelected');
-        const dataGiorno = JSON.parse(dataGiornoJSON);
-        // Fai qualcosa con i dati...
-        console.log(responseArray);
-        console.log(dataGiorno);
+        async function prenotaCampo(dataGiorno){
+            var orarioInizio = document.getElementById("orarioSelect").value;
+            var orarioFine = document.getElementById("orarioSelectFinish").value;
 
-        responseArray.forEach(element => {
-            document.write("<p> Campo prenotato: " + element['nomeCampo'] + " dalle " + element['oraInizio'] + " alle " + element['oraFine'] + "</p>");
+            const dataToSend = {
+                orarioInizio: orarioInizio,
+                orarioFine: orarioFine,
+                anno: dataGiorno["anno"],
+                mese: dataGiorno["mese"],
+                giorno: dataGiorno["giorno"]
+                
+            }
+            
+            console.log(dataToSend);
+            try {
+            const response = await fetch('addPrenotazioneCalcetto.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
+                    // Altri eventuali header necessari possono essere aggiunti qui
+                },
+                body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
+            });
+
+            // Gestione degli errori HTTP
+            if (!response.ok) {
+                throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
+            } 
+   
+            reciveDataFromServer(dataGiorno);
+ 
+
+             } catch (error) {
+            console.error('Errore nella fetch:', error.message);
+            }
+        }
+        async function reciveDataFromServer(dataGiorno){
+                const dataToSend2 = {
+                    anno: dataGiorno["anno"],
+                    mese: dataGiorno["mese"],
+                    giorno: dataGiorno["giorno"]
+            }
+            console.log(dataToSend2);
+
+            try {
+            const response = await fetch('backendCalcetto.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
+                    // Altri eventuali header necessari possono essere aggiunti qui
+                },
+                body: JSON.stringify(dataToSend2), // Converte i dati in formato JSON
+            });
+
+            // Gestione degli errori HTTP
+            if (!response.ok) {
+                throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
+            }
+
+            // Controllo del tipo di contenuto
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                const responseData = await response.json();
+                if (responseData.length === 0) {
+                        console.log('In questo giorno non sono state effettuate prenotazioni');
+                    } else {
+                        console.log('Dati ricevuti dal server:', responseData);
+                        $responseArray = responseData;
+                        console.log($responseArray);
+                        $stringaJSON = JSON.stringify($responseArray);
+                        sessionStorage.setItem('responseArray', $stringaJSON);
+                        // Dopo aver ottenuto i dati dal server
+                        location.reload();
+                    }
+            } else {
+                console.error('La risposta non contiene dati JSON');
+            }
+
+            } catch (error) {
+            console.error('Errore nella fetch:', error.message);
+            }
+        };
+
+        function createPage(dataGiorno){
+            let responseData = "";
+            // Recupera i dati memorizzati nel sessionStorage
+            const responseArrayJSON = sessionStorage.getItem('responseArray');
+            const responseArray = JSON.parse(responseArrayJSON);
+            
+            // Fai qualcosa con i dati...
+            console.log(responseArray);
+            console.log(dataGiorno);
+
+            responseArray.forEach(element => {
+                document.write("<p> Campo prenotato: " + element['nomeCampo'] + " dalle " + element['oraInizio'] + " alle " + element['oraFine'] + "</p>");
+            });
+
+            // Utilizza una promessa per garantire l'esecuzione di popolaOrari dopo il completamento del forEach
+            new Promise((resolve, reject) => {
+                // Esegui il resolve() dopo aver completato il forEach
+                resolve();
+            }).then(() => {
+                // Esegui popolaOrari(dataGiorno) dopo il completamento del forEach
+                popolaOrari(dataGiorno);
         });
+    }
 
-        // Utilizza una promessa per garantire l'esecuzione di popolaOrari dopo il completamento del forEach
-        new Promise((resolve, reject) => {
-            // Esegui il resolve() dopo aver completato il forEach
-            resolve();
-        }).then(() => {
-            // Esegui popolaOrari(dataGiorno) dopo il completamento del forEach
-            popolaOrari(dataGiorno);
-        });
-
-         /* function prenotaCampo(){
-
-        }  */
-         async function popolaOrari(dataGiorno) {
+         
+        async function popolaOrari(dataGiorno) {
             const dataToSend = {
                 anno: dataGiorno["anno"],
                 mese: dataGiorno["mese"],
@@ -97,13 +179,24 @@
             console.error('Errore nella fetch:', error.message);
             }
     }; 
-    function selezionaFine(orarioSelezionato, option){
+        function selezionaFine(orarioSelezionato){
+        var date = [];
+        var opzioni = document.getElementById("orarioSelect").options;
+        for (var i = 0; i < opzioni.length; i++) {
+            date.push(opzioni[i].value); 
+            console.log(opzioni[i].value);
+            console.log(date);
+        }
+        
         const selectFine = document.getElementById("orarioSelectFinish");
         selectFine.innerHTML = '';
-        do{
-            if(orarioSelezionato!==null){
+        let isPresent;
+        let newTime = orarioSelezionato;
+        
+            do{
+            isPresent = false;
             // Converti l'orario in secondi
-            var timeParts = orarioSelezionato.split(':');
+            var timeParts = newTime.split(':');
             var seconds = (+timeParts[0]) * 3600 + (+timeParts[1]) * 60 + (+timeParts[2]);
 
             // Aggiungi 30 minuti (1800 secondi)
@@ -115,18 +208,25 @@
             var secs = seconds - (hours * 3600) - (minutes * 60);
 
             // Formatta il risultato
-            var newTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + secs.toString().padStart(2, '0');
+            newTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + secs.toString().padStart(2, '0');
             const option = document.createElement('option');
             option.textContent = newTime; // Assumi che l'oggetto abbia una proprietà 'ora'
             selectFine.appendChild(option);
-
             console.log("Nuovo orario:", newTime);
-                    }
 
-        }while(newTime )
-        
+            for(let i = 0; i < date.length; i++){
+                if (date[i] == newTime) {
+                    isPresent = true;
+                    break;
+                }
+            
+            }}while(isPresent) 
+    } 
+    const dataGiornoJSON = sessionStorage.getItem('dataGiornoSelected');
+    const dataGiorno = JSON.parse(dataGiornoJSON);
+    createPage(dataGiorno);
 
-                } 
+   
     </script>
 </body>
 </html>

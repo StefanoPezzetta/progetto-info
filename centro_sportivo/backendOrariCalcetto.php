@@ -56,12 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
             
         }
-        /*  if (isset($result1) && count($result1) > 0) {
-                echo json_encode($result1);
-            } else {
-                // Nessun risultato trovato
-                echo json_encode(["error" => "Nessuna prenotazione trovata per il giorno specificato"]);
-            } */
+        
  
 
         $stmt2 = $mydb->prepare("SELECT orario.ora
