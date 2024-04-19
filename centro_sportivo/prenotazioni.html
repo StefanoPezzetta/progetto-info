@@ -16,6 +16,7 @@
     <select id="orarioSelectFinish">
         <!-- Opzioni del select verranno popolate dinamicamente -->
     </select>
+    
 
     
     <p>nel seguente giorno sono state effettuate le seguenti preotazioni</p>
@@ -105,7 +106,35 @@
             console.error('Errore nella fetch:', error.message);
             }
         };
+        /* async function eliminaPrenotazione(id, dataGiorno){
+            const dataToSend = {
+                id: id,
+            }
+            
+            console.log(dataToSend);
 
+            try {
+            const response = await fetch('deletePrenotazione.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
+                    // Altri eventuali header necessari possono essere aggiunti qui
+                },
+                body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
+            });
+
+            // Gestione degli errori HTTP
+            if (!response.ok) {
+                throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
+            } 
+
+            reciveDataFromServer(dataGiorno);
+
+             } catch (error) {
+            console.error('Errore nella fetch:', error.message);
+            } 
+
+        } */
         function createPage(dataGiorno){
             let responseData = "";
             // Recupera i dati memorizzati nel sessionStorage
@@ -117,7 +146,13 @@
             console.log(dataGiorno);
 
             responseArray.forEach(element => {
-                document.write("<p> Campo prenotato: " + element['nomeCampo'] + " dalle " + element['oraInizio'] + " alle " + element['oraFine'] + "</p>");
+                // Crea un paragrafo per visualizzare i dettagli della prenotazione, incluso l'ID
+                const paragrafo = document.createElement('p');
+                paragrafo.innerHTML = "Campo prenotato: " + element['nomeCampo'] + " dalle " + element['oraInizio'] + " alle " + element['oraFine'];
+
+
+                // Aggiungi il paragrafo al documento
+                document.body.appendChild(paragrafo);
             });
 
             // Utilizza una promessa per garantire l'esecuzione di popolaOrari dopo il completamento del forEach
@@ -228,5 +263,6 @@
 
    
     </script>
+    <a href="miePrenotazioni.php">Le mie prenotazioni</a>
 </body>
 </html>

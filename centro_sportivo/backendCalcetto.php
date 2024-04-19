@@ -28,16 +28,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       $giorno = $data['giorno'];
       $giornoPr = "$anno-$mese-$giorno";
 
-      $stmt = $mydb->prepare("SELECT campo.nome, campo.sport, prenotazione.ora_inizio, prenotazione.ora_fine 
+      $stmt = $mydb->prepare("SELECT prenotazione.id, campo.nome, campo.sport, prenotazione.ora_inizio, prenotazione.ora_fine 
       FROM prenotazione join campo on prenotazione.fkCampo = campo.id 
       where prenotazione.giorno = ? AND campo.sport = 'calcetto'
       ORDER BY prenotazione.ora_inizio");
       $stmt->bind_param("s", $giornoPr);
       // Esegui la query SQL
       if ($stmt->execute()) {
-        $stmt->bind_result($nomeCampo, $sportCampo, $oraInizio, $oraFine);
+        $stmt->bind_result($id, $nomeCampo, $sportCampo, $oraInizio, $oraFine);
         while ($stmt->fetch()) {
             $result[] = [
+                "id" => $id,
                 "nomeCampo" => $nomeCampo,
                 "sportCampo"=> $sportCampo,
                 "oraInizio" => $oraInizio,
