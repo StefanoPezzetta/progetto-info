@@ -11,68 +11,66 @@
         async function getData(){
             const url = 'getUserPrenotation.php';
 
-            fetch(url)
+
+                fetch(url)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error(`Errore HTTP: ${response.status}`);
+                    throw new Error(`Errore nella richiesta: ${response.status}`);
                     }
                     return response.json();
                 })
                 .then(data => {
                     console.log(data);
+                    if (data.length === 0) {
+                console.log('Non sono presenti prenotazioni a tuo carico');
+            }else{
+                createPage(data);
+            }
                 })
                 .catch(error => {
+                    const messageElement = document.createElement('p');
+                    messageElement.innerHTML = 'Non sono presenti prenotazioni a tuo carico.';
+                    document.body.appendChild(messageElement);
                     console.error('Si è verificato un errore:', error);
                 });
+            }
+            function createPage(responseArray) {
+                // Stampa l'array di risposta nella console
+                console.log(responseArray);
+                const paragrafi = document.querySelectorAll('p');
 
-        }
-
-
-
-        /* function createPage(dataGiorno){
-            let responseData = "";
-            // Recupera i dati memorizzati nel sessionStorage
-            const responseArrayJSON = sessionStorage.getItem('responseArray');
-            const responseArray = JSON.parse(responseArrayJSON);
-            
-            // Fai qualcosa con i dati...
-            console.log(responseArray);
-            console.log(dataGiorno);
-
-            responseArray.forEach(element => {
-                // Crea un paragrafo per visualizzare i dettagli della prenotazione, incluso l'ID
-                const paragrafo = document.createElement('p');
-                paragrafo.innerHTML = "Campo prenotato: " + element['nomeCampo'] + " dalle " + element['oraInizio'] + " alle " + element['oraFine'];
-
-                // Crea un pulsante elimina
-                const eliminaButton = document.createElement('button');
-                eliminaButton.innerText = "Elimina";
-
-                // Assegna un evento onclick al pulsante
-                // Utilizza una funzione freccia per passare i parametri a eliminaPrenotazione
-                eliminaButton.onclick = () => {
-                    eliminaPrenotazione(element['id'], dataGiorno);
-                };
-
-                // Aggiungi il pulsante al paragrafo
-                paragrafo.appendChild(eliminaButton);
-
-                // Aggiungi il paragrafo al documento
-                document.body.appendChild(paragrafo);
-            });
-
-            // Utilizza una promessa per garantire l'esecuzione di popolaOrari dopo il completamento del forEach
-            new Promise((resolve, reject) => {
-                // Esegui il resolve() dopo aver completato il forEach
-                resolve();
-            }).then(() => {
-                // Esegui popolaOrari(dataGiorno) dopo il completamento del forEach
-                popolaOrari(dataGiorno);
-        });
-    }
+                // Imposta il contenuto di ogni paragrafo a una stringa vuota
+                paragrafi.forEach(paragrafo => {
+                    paragrafo.innerHTML = '';
+                });
 
 
-    async function eliminaPrenotazione(id, dataGiorno){
+                // Ciclo per ogni elemento dell'array di risposta
+                responseArray.forEach(element => {
+                    let id =element['id'];
+                    const paragrafo = document.createElement('p');
+                    paragrafo.innerHTML = "Giorno: " + element['giorno'] + ", Campo prenotato: " + element['nomeCampo'] + ", Dalle " + element['oraInizio'] + " alle " + element['oraFine'];
+
+                    // Crea un pulsante
+                    const pulsante = document.createElement('button');
+                    pulsante.innerText = "Elimina";
+                    
+                    pulsante.addEventListener('click', () => {
+                    eliminaPrenotazione(id);                     
+                    });
+
+                    paragrafo.appendChild(pulsante);
+
+                    document.body.appendChild(paragrafo);
+                });
+
+                
+            }
+
+
+  
+
+    async function eliminaPrenotazione(id){
             const dataToSend = {
                 id: id,
             }
@@ -94,13 +92,13 @@
                 throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
             } 
 
-            reciveDataFromServer(dataGiorno);
+            getData();
 
              } catch (error) {
             console.error('Errore nella fetch:', error.message);
             } 
 
-        } */
+        } 
     
 
 getData();

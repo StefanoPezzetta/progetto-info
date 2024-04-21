@@ -104,26 +104,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /* // Verifica se $result è definito e contiene dati
-    if (isset($result1) && count($result1) > 0) {
-        echo json_encode($result);
-    } else {
-        // Nessun risultato trovato
-        echo json_encode(["error" => "Nessun orario disponibile"]);
-    } */
-
     }
 }

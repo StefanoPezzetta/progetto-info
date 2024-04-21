@@ -10,7 +10,6 @@ header("Access-Control-Allow-Headers: Content-Type");
 
 header('Content-Type: application/json');
 
-$_SESSION["emailInUso"] = 0;
 require("config.php"); //parametri di connessione
 $mydb = new mysqli(SERVER, UTENTE, PASSWORD, DATABASE);
 if ($mydb->connect_errno) {
@@ -24,19 +23,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 
 
-    $stmt = $mydb->prepare("SELECT id, fkCampo, giorno, ora_inizio, ora_fine FROM prenotazione WHERE fkUtente = ?");
+    $stmt = $mydb->prepare("SELECT prenotazione.id, prenotazione.fkCampo, campo.nome, prenotazione.giorno, prenotazione.ora_inizio, prenotazione.ora_fine FROM prenotazione join campo on prenotazione.fkCampo = campo.id WHERE fkUtente = ?");
     $stmt->bind_param("i", $user);
     if ($stmt->execute()) {
-        $stmt->bind_result($id, $fkCampo, $giorno, $oraInizio, $oraFine);
+        $stmt->bind_result($id, $fkCampo, $nomeCampo, $giorno, $oraInizio, $oraFine);
         while ($stmt->fetch()) {
             $result[] = [
                 "id" => $id,
+                "fkCampo" => $fkCampo,
                 "nomeCampo" => $nomeCampo,
-                "sportCampo"=> $sportCampo,
+                "giorno"=> $giorno,
                 "oraInizio" => $oraInizio,
                 "oraFine" => $oraFine,
             ];
         }
+    }
+    if (is_null($result)) {
+        $result = [];
     }
 
     echo json_encode($result);
