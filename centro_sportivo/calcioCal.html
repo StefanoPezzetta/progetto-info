@@ -90,9 +90,9 @@
       const contentType = response.headers.get('content-type');
       if (contentType && contentType.includes('application/json')) {
           const responseData = await response.json();
-          if (responseData.length === 0) {
-                console.log('In questo giorno non sono state effettuate prenotazioni');
-            } else {
+          /* if (responseData == 0) {
+                console.log('In questo giorno non sono state effettuate prenotazaaaioni');
+            } else { */
                 console.log('Dati ricevuti dal server:', responseData);
                 $responseArray = responseData;
                 console.log($responseArray);
@@ -101,8 +101,8 @@
                 $dataStringaJSON = JSON.stringify(dataToSend);
                 sessionStorage.setItem('dataGiornoSelected', $dataStringaJSON);
                 // Dopo aver ottenuto i dati dal server
-                window.location.href = `prenotazioni.html`;
-              }
+                 window.location.href = `prenotazioni.html`;
+               /* } */
       } else {
           console.error('La risposta non contiene dati JSON');
       }

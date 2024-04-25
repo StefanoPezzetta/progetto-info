@@ -25,13 +25,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
    if ($data !== null) {
       $id = $data['id'];
 
+      $stmt2 = $mydb->prepare("SELECT prenotazione.id, campo.nome, prenotazione.ora_inizio, prenotazione.ora_fine, campo.sport FROM prenotazione join campo on prenotazione.fkCampo = campo.id WHERE prenotazione.id = ?");
+      $stmt2->bind_param("i", $id);
+      if ($stmt2->execute()) {
+         $stmt2->bind_result($id, $nomeCampo, $oraInizio, $oraFine, $sportCampo);
+         while ($stmt2->fetch()) {
+             $result2[] = [
+                 "id" => $id,
+                 "nomeCampo" => $nomeCampo,
+                 "oraInizio" => $oraInizio,
+                 "oraFIne" => $oraFine,
+                 "sportCampo" => $sportCampo,
+             ];
+         }
+         $stmt2->close();
+       }
+
       $stmt = $mydb->prepare("DELETE FROM prenotazione WHERE id = ?");
       $stmt->bind_param("i", $id);
       $stmt->execute();
       $stmt->close();
 
+
 } else {
    http_response_code(400);
    echo "Invalid JSON data";
 }
+   echo json_encode($result2);
+
 }

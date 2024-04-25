@@ -26,7 +26,6 @@ else{
     $stmt->bind_param("sssss", $_POST["mail"], $pw, $_POST["nome"], $_POST["cognome"], $_POST["data_nascita"]);
     $stmt->execute();
     $stmt->close();
-   /*  $_SESSION["registrato"] = 1; */
     header("Location: prenotazione_campi.php");
 }
 

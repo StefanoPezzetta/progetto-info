@@ -19,7 +19,8 @@
     
 
     
-    <p>nel seguente giorno sono state effettuate le seguenti preotazioni</p>
+<!--     <p>nel seguente giorno sono state effettuate le seguenti preotazioni</p>
+ -->    <div id = "elementi"></div>
 
 
 
@@ -91,13 +92,13 @@
                         console.log('In questo giorno non sono state effettuate prenotazioni');
                     } else {
                         console.log('Dati ricevuti dal server:', responseData);
-                        $responseArray = responseData;
-                        console.log($responseArray);
-                        $stringaJSON = JSON.stringify($responseArray);
-                        sessionStorage.setItem('responseArray', $stringaJSON);
+                        responseArray = responseData;
+                        console.log(responseArray);
+                        stringaJSON = JSON.stringify(responseArray);
+                        sessionStorage.setItem('responseArray', stringaJSON);
                         // Dopo aver ottenuto i dati dal server
-                        location.reload();
-                    }
+                         location.reload();
+                     }
             } else {
                 console.error('La risposta non contiene dati JSON');
             }
@@ -106,54 +107,43 @@
             console.error('Errore nella fetch:', error.message);
             }
         };
-        /* async function eliminaPrenotazione(id, dataGiorno){
-            const dataToSend = {
-                id: id,
-            }
-            
-            console.log(dataToSend);
-
-            try {
-            const response = await fetch('deletePrenotazione.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
-                    // Altri eventuali header necessari possono essere aggiunti qui
-                },
-                body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
-            });
-
-            // Gestione degli errori HTTP
-            if (!response.ok) {
-                throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
-            } 
-
-            reciveDataFromServer(dataGiorno);
-
-             } catch (error) {
-            console.error('Errore nella fetch:', error.message);
-            } 
-
-        } */
+     
         function createPage(dataGiorno){
             let responseData = "";
-            // Recupera i dati memorizzati nel sessionStorage
-            const responseArrayJSON = sessionStorage.getItem('responseArray');
-            const responseArray = JSON.parse(responseArrayJSON);
+/*             paragrafo.innerHTML = "";
+ */            // Recupera i dati memorizzati nel sessionStorage
+            let responseArrayJSON = sessionStorage.getItem('responseArray');
+            let responseArray = JSON.parse(responseArrayJSON);
+            let elementiDiv = document.getElementById('elementi');
             
             // Fai qualcosa con i dati...
+            console.log("caa");
             console.log(responseArray);
             console.log(dataGiorno);
+            if(responseArray == 0){
+                const elemento = document.createElement('p');
+                elemento.textContent = `Nel seguente giorno non sono state effettuate prenotazioni`;
+                elementiDiv.appendChild(elemento);
 
-            responseArray.forEach(element => {
-                // Crea un paragrafo per visualizzare i dettagli della prenotazione, incluso l'ID
-                const paragrafo = document.createElement('p');
-                paragrafo.innerHTML = "Campo prenotato: " + element['nomeCampo'] + " dalle " + element['oraInizio'] + " alle " + element['oraFine'];
 
 
-                // Aggiungi il paragrafo al documento
-                document.body.appendChild(paragrafo);
-            });
+            }
+            else{if (elementiDiv) {
+                // Rimuovi tutti i figli del div utilizzando il loop while
+                while (elementiDiv.firstChild) {
+                    elementiDiv.removeChild(elementiDiv.firstChild);
+                }
+            }
+                for(let i = 0; i < responseArray.length; i++){
+                    const prenotazione = responseArray[i];
+                    const elemento = document.createElement('p');
+                    elemento.textContent = `Campo: ${prenotazione.nomeCampo} dalle ${prenotazione.oraInizio} alle ${prenotazione.oraFine}`;
+                    elementiDiv.appendChild(elemento);
+                }}
+            
+
+           
+        
 
             // Utilizza una promessa per garantire l'esecuzione di popolaOrari dopo il completamento del forEach
             new Promise((resolve, reject) => {
@@ -259,10 +249,25 @@
     } 
     const dataGiornoJSON = sessionStorage.getItem('dataGiornoSelected');
     const dataGiorno = JSON.parse(dataGiornoJSON);
-    createPage(dataGiorno);
+
+    
+     /* createPage(dataGiorno);  */
+     if (window.performance.navigation.type === window.performance.navigation.TYPE_RELOAD) {
+            // La pagina è stata ricaricata
+            createPage(dataGiorno);
+            console.log("La pagina è stata ricaricata");
+        } else if (window.performance.navigation.type === window.performance.navigation.TYPE_BACK_FORWARD) {
+            // È avvenuto uno spostamento da una pagina precedente o successiva
+            createPage(dataGiorno);
+            console.log("Spostamento da una pagina precedente o successiva");
+        }else{
+            createPage(dataGiorno);
+        }
+   
 
    
     </script>
     <a href="miePrenotazioni.php">Le mie prenotazioni</a>
+    <a href="calcioCal.html">Indietro</a>
 </body>
 </html>

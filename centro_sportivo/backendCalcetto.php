@@ -58,7 +58,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode($result);
     } else {
         // Nessun risultato trovato
-        echo json_encode(["error" => "Nessuna prenotazione trovata per il giorno specificato"]);
+        $result = 0;
+/*         echo json_encode(["error" => "Nessuna prenotazione trovata per il giorno specificato"]);
+
+ */
+        echo json_encode($result);
+
     }
 
     }

@@ -37,6 +37,8 @@
             function createPage(responseArray) {
                 // Stampa l'array di risposta nella console
                 console.log(responseArray);
+                /* stringaJSON = JSON.stringify(responseArray);
+                sessionStorage.setItem('responseArray', stringaJSON); */
                 const paragrafi = document.querySelectorAll('p');
 
                 // Imposta il contenuto di ogni paragrafo a una stringa vuota
@@ -87,6 +89,41 @@
                 body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
             });
 
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                let responseData = await response.json();
+                console.log("pisello");
+                console.log(respownseData);
+
+
+                let responseArrayJSON = sessionStorage.getItem('responseArray');
+                let responseArray = JSON.parse(responseArrayJSON);
+                console.log("cacca");
+                console.log(responseArray);
+
+                // Crea un set per tenere traccia dei valori chiave già incontrati in arr2
+                const keysInArr2 = new Set();
+
+            // Popola il set con i valori della chiave specifica da arr2
+            responseData.forEach(item => {
+                if (item.hasOwnProperty(id)) {
+                    keysInArr2.add(item[id]);
+                }
+            });
+
+            // Filtra arr1 rimuovendo gli elementi con chiavi duplicate in arr2
+            const filteredArr1 = responseArray.filter(item => {
+                if (item.hasOwnProperty(id)) {
+                    // Rimuovi l'elemento se la sua chiave è presente in arr2
+                    return !keysInArr2.has(item[id]);
+                }
+                // Mantieni l'elemento se la chiave non è presente
+                return true;
+            });
+
+           console.log(filteredArr1);
+                
+            }
             // Gestione degli errori HTTP
             if (!response.ok) {
                 throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
@@ -101,8 +138,9 @@
         } 
     
 
-getData();
+        getData();
     
     </script>
+    <a href="prenotazioni.html">Indietro</a>
 </body>
 </html>
