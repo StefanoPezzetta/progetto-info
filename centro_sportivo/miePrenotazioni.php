@@ -93,35 +93,35 @@
             if (contentType && contentType.includes('application/json')) {
                 let responseData = await response.json();
                 console.log("pisello");
-                console.log(respownseData);
+                console.log(responseData);
 
 
                 let responseArrayJSON = sessionStorage.getItem('responseArray');
                 let responseArray = JSON.parse(responseArrayJSON);
-                console.log("cacca");
-                console.log(responseArray);
 
-                // Crea un set per tenere traccia dei valori chiave già incontrati in arr2
-                const keysInArr2 = new Set();
+                // Crea un set per tenere traccia degli id già presenti in responseData
+                const idsInResponseData = new Set();
 
-            // Popola il set con i valori della chiave specifica da arr2
-            responseData.forEach(item => {
-                if (item.hasOwnProperty(id)) {
-                    keysInArr2.add(item[id]);
-                }
-            });
+                // Popola il set con i valori di id presenti in responseData
+                responseData.forEach(item => {
+                    if (item.hasOwnProperty('id')) { // Assicurati che l'oggetto abbia la chiave 'id'
+                        idsInResponseData.add(item.id); // Aggiungi l'id al set
+                    }
+                });
 
-            // Filtra arr1 rimuovendo gli elementi con chiavi duplicate in arr2
-            const filteredArr1 = responseArray.filter(item => {
-                if (item.hasOwnProperty(id)) {
-                    // Rimuovi l'elemento se la sua chiave è presente in arr2
-                    return !keysInArr2.has(item[id]);
-                }
-                // Mantieni l'elemento se la chiave non è presente
-                return true;
-            });
+                // Filtra responseArray rimuovendo gli elementi con id presenti in idsInResponseData
+                const filteredResponseArray = responseArray.filter(item => {
+                    if (item.hasOwnProperty('id')) { // Assicurati che l'oggetto abbia la chiave 'id'
+                        // Rimuovi l'elemento se il suo id è presente in idsInResponseData
+                        return !idsInResponseData.has(item.id);
+                    }
+                    // Mantieni l'elemento se non ha la chiave 'id' o l'id non è presente in idsInResponseData
+                });
 
-           console.log(filteredArr1);
+                console.log(filteredResponseArray);
+                stringaJSON = JSON.stringify(filteredResponseArray);
+                sessionStorage.setItem('responseArray', stringaJSON);
+
                 
             }
             // Gestione degli errori HTTP
