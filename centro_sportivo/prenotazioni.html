@@ -10,6 +10,7 @@
     <button onclick="prenotaCampo(dataGiorno)">PRENOTA UN CAMPO</button>
     <label for="orarioSelect">Seleziona orario:</label>
     <select id="orarioSelect" onchange="selezionaFine(this.value)">
+        <option value="" disabled selected>Scegli un orario</option>
         <!-- Opzioni del select verranno popolate dinamicamente -->
     </select>
     <label for="orarioSelectFinish">Seleziona orario di fine:</label>
@@ -26,12 +27,15 @@
 
     <script>
         async function prenotaCampo(dataGiorno){
+            let sportJSON = sessionStorage.getItem('sport');
+            let sportValue = JSON.parse(sportJSON);
             var orarioInizio = document.getElementById("orarioSelect").value;
             var orarioFine = document.getElementById("orarioSelectFinish").value;
 
             const dataToSend = {
                 orarioInizio: orarioInizio,
                 orarioFine: orarioFine,
+                sport: sportValue,
                 anno: dataGiorno["anno"],
                 mese: dataGiorno["mese"],
                 giorno: dataGiorno["giorno"]
@@ -51,10 +55,15 @@
 
             // Gestione degli errori HTTP
             if (!response.ok) {
-                throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
-            } 
-   
-            reciveDataFromServer(dataGiorno);
+                const errorData = await response.json();
+                // Controlla il codice di stato HTTP
+                if (response.status === 401) {
+                    window.location.href = 'login.php';
+                }
+            }else{
+                reciveDataFromServer(dataGiorno);
+            }
+
  
 
              } catch (error) {
@@ -62,7 +71,10 @@
             }
         }
         async function reciveDataFromServer(dataGiorno){
+                let sportJSON = sessionStorage.getItem('sport');
+                let sportValue = JSON.parse(sportJSON);
                 const dataToSend2 = {
+                    sport: sportValue,
                     anno: dataGiorno["anno"],
                     mese: dataGiorno["mese"],
                     giorno: dataGiorno["giorno"]
@@ -70,7 +82,7 @@
             console.log(dataToSend2);
 
             try {
-            const response = await fetch('backendCalcetto.php', {
+            const response = await fetch('backendPrenotazioni.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
@@ -157,7 +169,10 @@
 
          
         async function popolaOrari(dataGiorno) {
+            let sportJSON = sessionStorage.getItem('sport');
+            let sportValue = JSON.parse(sportJSON);
             const dataToSend = {
+                sport: sportValue,
                 anno: dataGiorno["anno"],
                 mese: dataGiorno["mese"],
                 giorno: dataGiorno["giorno"]
@@ -187,8 +202,13 @@
                 console.log(responseData);
                 // Popola le opzioni della select con i risultati della fetch
                 const select = document.getElementById('orarioSelect');
-                select.innerHTML = ''; // Pulisce le opzioni precedenti
+                // Ottieni tutte le opzioni nell'elemento select
+                const options = select.querySelectorAll('option');
 
+                // Mantieni la prima opzione e rimuovi tutte le altre opzioni
+                for (let i = options.length - 1; i > 0; i--) {
+                    options[i].remove();
+                }
                 // Itera sull'array associativo e aggiungi le ore disponibili come opzioni della select
                 responseData["merged_result"].forEach(ora => {
                     const option = document.createElement('option');

@@ -16,10 +16,7 @@ session_start();
     <button id="padel">Padel</button>
     <button id="calcio">Calcio</button>
     <button id="nuoto">Nuoto</button>
-
-</body>
-</html>
-<script>
+    <script>
     const calcetto = document.getElementById('calcetto');
     const tennis = document.getElementById('tennis');
     const padel = document.getElementById('padel');
@@ -66,4 +63,8 @@ session_start();
     }
 
 </script>
+<a href="index.php">Indietro</a>
+</body>
+</html>
+
 

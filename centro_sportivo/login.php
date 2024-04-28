@@ -1,13 +1,4 @@
-<?php
-session_start();
-$errorMessage = "";
-if(isset($_SESSION['registrato']) && $_SESSION['registrato'] == 1){
-    // Se è impostato a 1, mostra il messaggio di errore
-    $errorMessage = "<p>Email o password errati</p>";
-}else{
-    $errorMessage = "";
-}
-?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -17,11 +8,46 @@ if(isset($_SESSION['registrato']) && $_SESSION['registrato'] == 1){
 </head>
 <body>
     <h1>INSERISCI LE TUE CREDENZIALI</h1>
-    <form action="login_script.php" method="POST">
-        <input type="text" name="mail" id="mail" placeholder="mail">
-        <input type="text" name="password" id="password" placeholder="pw">
-        <input type="submit" value="conferma">
-    </form>
-    <?php echo $errorMessage; ?>
+        <input type="text" name="email" id="email" placeholder="email">
+        <input type="text" name="pw" id="pw" placeholder="pw">
+        <button onclick="login()">Conferma</button>
+        <div id = "errore"></div>
 </body>
 </html>
+<script>
+async function login() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('pw').value;
+    const errore = document.getElementById('errore');
+
+    
+    const dataToSend = {
+        email: email,
+        password: password,
+    };
+    
+    console.log(dataToSend);
+    
+    try {
+        const response = await fetch('login_script.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataToSend),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error);
+        }
+
+        const data = await response.json();
+        console.log('Accesso riuscito:', data);
+        window.location.href = 'prenotazione_campi.php'; // Reindirizza alla home page
+    } catch (error) {
+        console.error('Errore di autenticazione:', error.message);
+        errore.innerHTML = "email o password errate";
+    }
+}
+</script>
