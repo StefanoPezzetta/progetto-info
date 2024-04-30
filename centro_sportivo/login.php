@@ -1,17 +1,40 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
-    <h1>INSERISCI LE TUE CREDENZIALI</h1>
-        <input type="text" name="email" id="email" placeholder="email">
-        <input type="text" name="pw" id="pw" placeholder="pw">
-        <button onclick="login()">Conferma</button>
-        <div id = "errore"></div>
+<br><br><br>
+
+<h1 class="title">BOÈSPORTIVE CENTER</h1>
+    <hr class="separatore">
+    <div class="container">
+    <h2 class = "accedi">Accedi</h2>
+
+    <a href="index.php" class="back-link">&#8592;</a>
+    <a href="index.php">
+    <img class ="logo" src="https://img.icons8.com/bubbles/100/pull-up-bar.png" /></a>
+
+
+            <div class="form-group">
+                <label for="username">Email:</label>
+                <input type="text" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="text" id="pw" name="pw" required>
+            </div>
+            <div id = "errore"></div>
+            <div class="form-group">
+                <button onclick="login()">Login</button>
+            </div>
+        <div class="register-link">
+            <p>Non hai un account? <a href="registra.php">Registrati</a></p>
+        </div>
+    </div>
 </body>
 </html>
 <script>
