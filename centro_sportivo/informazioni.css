@@ -1,0 +1,64 @@
+/* Stile generale della pagina */
+body {
+    background-color: #fce0a2; /* Marrone chiaro per lo sfondo */
+    color: #4A3B36; /* Marrone scuro per il testo */
+    font-family: Arial, sans-serif; /* Font generale */
+    margin: 0;
+    padding: 0;
+}
+
+/* Stile per i titoli */
+h1, h2, h3 {
+    color: #4A3B36; /* Marrone scuro */
+    margin-bottom: 10px;
+}
+
+/* Stile per il titolo principale */
+h1 {
+    font-size: 32px; /* Dimensione più grande per l'header principale */
+    text-align: center; /* Centra il titolo */
+    padding: 20px; /* Aggiungi padding per distanziare il titolo */
+    background-color: #8B4513; /* Marrone più scuro per il titolo */
+    color: #FFFFFF; /* Testo bianco per contrastare */
+}
+
+/* Stile per i sotto-titoli */
+h2 {
+    font-size: 24px; /* Dimensione più piccola per i sotto-titoli */
+    padding-left: 20px; /* Padding a sinistra */
+}
+
+/* Stile per il testo principale */
+h3 {
+    font-size: 16px; /* Dimensione standard per il testo */
+    line-height: 1.5; /* Migliora la leggibilità */
+    padding: 20px; /* Padding intorno al testo */
+}
+
+/* Stile per i link */
+a {
+    color: #A07967; /* Marrone più scuro per i link */
+    text-decoration: none; /* Rimuove la sottolineatura */
+    font-weight: bold; /* Rende i link più visibili */
+}
+
+a:hover {
+    text-decoration: underline; /* Sottolinea il link quando si passa il mouse sopra */
+}/* Stile per il pulsante */
+button, .button {
+    padding: 10px 20px;
+    background-color: #8B4513;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.5s ease; /* Add transition for background color and transform */
+    position: absolute;
+    left: 15px;
+}
+
+/* Effetto hover sul pulsante */
+button:hover, .button:hover {
+    background-color: #fce0a2; /* Cambia lo sfondo a marrone più scuro quando si passa il mouse sopra */
+}
+
