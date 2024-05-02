@@ -25,16 +25,18 @@
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>
-                <input type="text" id="pw" name="pw" required>
+                <input type="password" id="pw" name="pw" required>
             </div>
             <div id = "errore"></div>
             <div class="form-group">
-                <button onclick="login()">Login</button>
+                <button class="login" onclick="login()">Login</button>
             </div>
         <div class="register-link">
             <p>Non hai un account? <a href="registra.php">Registrati</a></p>
         </div>
     </div>
+    <a class="indietro" href="index.php"> <img src="https://img.icons8.com/ink/48/000000/undo.png"/></a>
+
 </body>
 </html>
 <script>

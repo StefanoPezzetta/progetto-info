@@ -17,10 +17,8 @@ if ($mydb->connect_errno) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
-   // Leggi il corpo della richiesta
    $json_data = file_get_contents("php://input");
 
-   // Decodifica la stringa JSON in un array associativo
    $data = json_decode($json_data, true);
    if ($data !== null) {
       $id = $data['id'];

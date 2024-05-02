@@ -1,50 +1,45 @@
-/* Stile generale della pagina */
 body {
-    background-color: #fce0a2; /* Marrone chiaro per lo sfondo */
-    color: #4A3B36; /* Marrone scuro per il testo */
-    font-family: Arial, sans-serif; /* Font generale */
+    background-color: #fce0a2; 
+    color: #4A3B36; 
+    font-family: Arial, sans-serif; 
     margin: 0;
     padding: 0;
 }
 
-/* Stile per i titoli */
 h1, h2, h3 {
-    color: #4A3B36; /* Marrone scuro */
+    color: #4A3B36; 
     margin-bottom: 10px;
 }
 
-/* Stile per il titolo principale */
 h1 {
-    font-size: 32px; /* Dimensione più grande per l'header principale */
-    text-align: center; /* Centra il titolo */
-    padding: 20px; /* Aggiungi padding per distanziare il titolo */
-    background-color: #8B4513; /* Marrone più scuro per il titolo */
-    color: #FFFFFF; /* Testo bianco per contrastare */
+    font-size: 32px; 
+    text-align: center; 
+    padding: 20px; 
+    background-color: #8B4513; 
+    color: #FFFFFF; 
 }
 
-/* Stile per i sotto-titoli */
 h2 {
-    font-size: 24px; /* Dimensione più piccola per i sotto-titoli */
-    padding-left: 20px; /* Padding a sinistra */
+    font-size: 24px; 
+    padding-left: 20px; 
 }
 
-/* Stile per il testo principale */
 h3 {
-    font-size: 16px; /* Dimensione standard per il testo */
-    line-height: 1.5; /* Migliora la leggibilità */
-    padding: 20px; /* Padding intorno al testo */
+    font-size: 16px; 
+    line-height: 1.5; 
+    padding: 20px; 
 }
 
-/* Stile per i link */
 a {
-    color: #A07967; /* Marrone più scuro per i link */
-    text-decoration: none; /* Rimuove la sottolineatura */
-    font-weight: bold; /* Rende i link più visibili */
+    color: #A07967; 
+    text-decoration: none; 
+    font-weight: bold; 
 }
 
 a:hover {
-    text-decoration: underline; /* Sottolinea il link quando si passa il mouse sopra */
-}/* Stile per il pulsante */
+    text-decoration: underline; 
+}
+
 button, .button {
     padding: 10px 20px;
     background-color: #8B4513;
@@ -52,14 +47,24 @@ button, .button {
     border: none;
     border-radius: 15px;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.5s ease; /* Add transition for background color and transform */
+    transition: background-color 0.3s ease, transform 0.5s ease; 
     position: absolute;
     top: 650px;
-  
 }
 
-/* Effetto hover sul pulsante */
 button:hover, .button:hover {
-    background-color: #fce0a2; /* Cambia lo sfondo a marrone più scuro quando si passa il mouse sopra */
+    background-color: #fce0a2; 
 }
 
+.indietro {
+    padding: 10px 20px;
+    background-color: #8B4513;
+    color: #fff;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.5s ease; 
+    position: fixed;
+    top: 20px;
+    left: 30px;
+}

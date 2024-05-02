@@ -57,7 +57,6 @@ session_start();
     const nuoto = document.getElementById('nuoto');
 
 
-    // Aggiungi event listener ai pulsanti
     calcetto.addEventListener('click', () => sport('calcetto'));
     tennis.addEventListener('click', () => sport('tennis'));
     padel.addEventListener('click', () => sport('padel'));
@@ -95,30 +94,29 @@ session_start();
 
     }
 
-    function logout(){
-        alert("sei sicuro di voler effettuare il logout?");
-        // Specifica l'URL a cui vuoi inviare la richiesta GET
+    function logout() {
+    const confermaLogout = confirm("Sei sicuro di voler effettuare il logout?");
+
+    if (confermaLogout) {
         const url = 'logout.php';
 
-        // Utilizza fetch per effettuare una richiesta GET all'URL specificato
         fetch(url)
-        .then(response => {
-            // Verifica se la risposta è ok (status code 200)
-            if (response.ok) {
-            console.log('Richiesta GET completata con successo');
-            } else {
-            // Se la risposta non è ok, lancia un errore
-            throw new Error(`Errore nella richiesta: ${response.status}`);
-            }
-        })
-        .catch(error => {
-            // Gestisci eventuali errori
-            console.error('Errore:', error);
-        });
+            .then(response => {
+                if (response.ok) {
+                    console.log('Richiesta GET completata con successo');
+                } else {
+                    throw new Error(`Errore nella richiesta: ${response.status}`);
+                }
+            })
+            .catch(error => {
+                console.error('Errore:', error);
+            });
+
         window.location.href = 'index.php';
     }
+}
 </script>
-<a class="indietro" href="index.php">Indietro</a>
+<a class="indietro" href="index.php"><img src="https://img.icons8.com/ink/48/000000/undo.png"/></a>
 <button class="logout" onclick = logout()><img src="https://img.icons8.com/dusk/64/logout-rounded.png"/></button>
 </body>
 </html>

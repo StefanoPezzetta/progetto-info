@@ -11,13 +11,15 @@
   <div id = "titolo">
     <!-- <h1>Calendario prenotazioni </h1> -->
   </div>
+  <button class="logout" onclick = logout()><img src="https://img.icons8.com/dusk/64/logout-rounded.png"/></button>
+
 
 <div class="container">
   <div class="month-year" id="monthYear"></div>
   <table id="calendario"></table>
   <div class="button-container">
-    <button class="button" onclick="scorriMese(-1)">Indietro</button>
-    <button class="button" onclick="scorriMese(1)">Avanti</button>
+    <button class="button" onclick="scorriMese(-1)"><img src="https://img.icons8.com/ink/48/000000/arrow-pointing-left.png"/></button>
+    <button class="button" onclick="scorriMese(1)"><img src="https://img.icons8.com/ink/48/000000/arrow.png"/></button>
   </div>
 </div>
 
@@ -176,6 +178,35 @@
     document.body.appendChild(containerElement);
 
   }
+  function logout() {
+    // Mostra una finestra di conferma all'utente
+    const confermaLogout = confirm("Sei sicuro di voler effettuare il logout?");
+
+    // Se l'utente conferma, esegui il logout
+    if (confermaLogout) {
+        // Specifica l'URL a cui vuoi inviare la richiesta GET
+        const url = 'logout.php';
+
+        // Utilizza fetch per effettuare una richiesta GET all'URL specificato
+        fetch(url)
+            .then(response => {
+                // Verifica se la risposta è ok (status code 200)
+                if (response.ok) {
+                    console.log('Richiesta GET completata con successo');
+                } else {
+                    // Se la risposta non è ok, lancia un errore
+                    throw new Error(`Errore nella richiesta: ${response.status}`);
+                }
+            })
+            .catch(error => {
+                // Gestisci eventuali errori
+                console.error('Errore:', error);
+            });
+
+        // Reindirizza l'utente alla pagina di logout
+        window.location.href = 'index.php';
+    }
+}
   
 
   const oggi = new Date();
@@ -190,7 +221,7 @@
   sport(sportValue);
 
 </script>
-<a href="prenotazione_campi.php">Indietro</a>
+<a class="indietro" href="prenotazione_campi.php"><img src="https://img.icons8.com/ink/48/000000/undo.png"/></a>
 </body>
 </html>
 

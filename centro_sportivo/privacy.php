@@ -58,6 +58,6 @@ Email: [boèsportivecenter@gmail.com]
 Telefono: [+393331369344]
 Indirizzo: [Via Paolo VI n 6]
 <br>
-<a class= "button" href="index.php">Indietro</a>
+<a class="indietro" href="index.php"> <img src="https://img.icons8.com/ink/48/000000/undo.png"/></a>
 </body>
 </html>

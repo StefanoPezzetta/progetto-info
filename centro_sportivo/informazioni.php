@@ -20,6 +20,6 @@ Per chi preferisce il calcio, Boèsportive Center offre un campo da calcio ad 11
 Il centro sportivo vanta anche due piscine, che possono essere utilizzate per il nuoto ricreativo o per corsi di nuoto. Queste piscine sono ben mantenute e offrono un ambiente sicuro e accogliente per tutti gli utenti.
 
 Boèsportive Center si impegna a fornire un'esperienza sportiva di alta qualità ai suoi visitatori, promuovendo uno stile di vita sano e attivo nella comunità di Bovezzo.</h3>
-<a class= "button" href="index.php">Indietro</a>
+<a class="indietro" href="index.php"> <img src="https://img.icons8.com/ink/48/000000/undo.png"/></a>
 </body>
 </html>

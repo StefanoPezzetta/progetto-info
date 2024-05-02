@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <h1>Le tue prenotazioni</h1>
+    <link rel="stylesheet" href="miePrenotazioni.css">
+
 </head>
 <body>
+    <button class="logout" onclick = logout()><img src="https://img.icons8.com/dusk/64/logout-rounded.png"/></button>
+
     <script>
         async function getData(){
             const url = 'getUserPrenotation.php';
@@ -35,30 +39,29 @@
                 });
             }
             function createPage(responseArray) {
-                // Stampa l'array di risposta nella console
                 console.log(responseArray);
-                /* stringaJSON = JSON.stringify(responseArray);
-                sessionStorage.setItem('responseArray', stringaJSON); */
                 const paragrafi = document.querySelectorAll('p');
 
-                // Imposta il contenuto di ogni paragrafo a una stringa vuota
                 paragrafi.forEach(paragrafo => {
-                    paragrafo.innerHTML = '';
+                    paragrafo.remove();
                 });
 
 
-                // Ciclo per ogni elemento dell'array di risposta
                 responseArray.forEach(element => {
                     let id =element['id'];
                     const paragrafo = document.createElement('p');
                     paragrafo.innerHTML = "Giorno: " + element['giorno'] + ", Campo prenotato: " + element['nomeCampo'] + ", Dalle " + element['oraInizio'] + " alle " + element['oraFine'];
 
-                    // Crea un pulsante
                     const pulsante = document.createElement('button');
-                    pulsante.innerText = "Elimina";
-                    
+                    pulsante.className = "elimina"; 
+
+                    const immagine = document.createElement('img');
+                    immagine.src = 'https://img.icons8.com/doodle/48/full-trash.png'; 
+
+                    pulsante.appendChild(immagine);
+
                     pulsante.addEventListener('click', () => {
-                    eliminaPrenotazione(id);                     
+                        eliminaPrenotazione(id);
                     });
 
                     paragrafo.appendChild(pulsante);
@@ -83,10 +86,9 @@
             const response = await fetch('deletePrenotazione.php', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
-                    // Altri eventuali header necessari possono essere aggiunti qui
+                    'Content-Type': 'application/json', 
                 },
-                body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
+                body: JSON.stringify(dataToSend), 
             });
 
             const contentType = response.headers.get('content-type');
@@ -99,23 +101,18 @@
                 let responseArrayJSON = sessionStorage.getItem('responseArray');
                 let responseArray = JSON.parse(responseArrayJSON);
 
-                // Crea un set per tenere traccia degli id già presenti in responseData
                 const idsInResponseData = new Set();
 
-                // Popola il set con i valori di id presenti in responseData
                 responseData.forEach(item => {
-                    if (item.hasOwnProperty('id')) { // Assicurati che l'oggetto abbia la chiave 'id'
-                        idsInResponseData.add(item.id); // Aggiungi l'id al set
+                    if (item.hasOwnProperty('id')) {
+                        idsInResponseData.add(item.id); 
                     }
                 });
 
-                // Filtra responseArray rimuovendo gli elementi con id presenti in idsInResponseData
                 const filteredResponseArray = responseArray.filter(item => {
-                    if (item.hasOwnProperty('id')) { // Assicurati che l'oggetto abbia la chiave 'id'
-                        // Rimuovi l'elemento se il suo id è presente in idsInResponseData
+                    if (item.hasOwnProperty('id')) { 
                         return !idsInResponseData.has(item.id);
                     }
-                    // Mantieni l'elemento se non ha la chiave 'id' o l'id non è presente in idsInResponseData
                 });
 
                 console.log(filteredResponseArray);
@@ -124,7 +121,6 @@
 
                 
             }
-            // Gestione degli errori HTTP
             if (!response.ok) {
                 throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
             } 
@@ -135,12 +131,33 @@
             console.error('Errore nella fetch:', error.message);
             } 
 
-        } 
+        }
+        function logout() {
+            const confermaLogout = confirm("Sei sicuro di voler effettuare il logout?");
+
+            if (confermaLogout) {
+                const url = 'logout.php';
+
+                fetch(url)
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('Richiesta GET completata con successo');
+                        } else {
+                            throw new Error(`Errore nella richiesta: ${response.status}`);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Errore:', error);
+                    });
+
+                window.location.href = 'index.php';
+            }
+        }
     
 
         getData();
     
     </script>
-    <a href="prenotazioni.html">Indietro</a>
+    <a class="indietro" href="prenotazioni.html"> <img src="https://img.icons8.com/ink/48/000000/undo.png"/></a>
 </body>
 </html>

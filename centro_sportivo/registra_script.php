@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     header('Content-Type: application/json');
                     echo json_encode(['success' => true, 'message' => 'Accesso riuscito']);                    
                 } else {
-                    // Errore durante l'inserimento
+
                     $stmt->close();
                     header('HTTP/1.1 500 Internal Server Error');
                     header('Content-Type: application/json');
@@ -61,8 +61,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             }
         } else {
-            // L'email non è valida, gestisci l'errore
-            // Risposta JSON per credenziali errate
             header('HTTP/1.1 400 Bad Request');
             header('Content-Type: application/json');
             echo json_encode(['error' => 'Email non valida']);

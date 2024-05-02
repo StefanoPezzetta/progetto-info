@@ -26,21 +26,21 @@
         </header>
         
           <div class="prenotazione">
-                <a class = "button" href="prenotazione_campi.php">Prenota un campo</a>
+                <a class = "button" href="prenotazione_campi.php"><img  src="img/prenota.png"/>Prenota <br> un campo</a>
             </div>
             <div class="accedi">
-                <a class = "button" href="login.php">Accedi</a>
+                <a class = "button" href="login.php"><img src="https://img.icons8.com/pulsar-color/48/user.png"/>Accedi</a>
             </div>
             <div class="registrati">
-                <a class = "button" href="registra.php">Registrati</a>
+                <a class = "button" href="registra.php"><img  src="img/registra.png"/>Registrati</a>
             </div>
             <div class="informazioni">
-                <a class = "button" href="informazioni.php">Chi siamo?</a>
+                <a class = "button" href="informazioni.php"><img  src="https://img.icons8.com/pulsar-color/48/user-group-man-woman.png"/>Chi siamo?</a>
             </div>
         
       </div>
     </div>
-    <a class ="privacy" href="privacyPolicy">Privacy Policy</a>
+    <a class ="privacy" href="privacy.php">Privacy Policy</a>
         
 </body>
 <link rel="stylesheet" href="index.css">

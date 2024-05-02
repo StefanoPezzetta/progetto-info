@@ -4,24 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="prenotazioni.css">
+
 </head>
 <body>
     <h1>PAGINA DI PRENOTAZIONI</h1>
-    <button onclick="prenotaCampo(dataGiorno)">PRENOTA UN CAMPO</button>
-    <label for="orarioSelect">Seleziona orario:</label>
-    <select id="orarioSelect" onchange="selezionaFine(this.value)">
+    <button class="logout" onclick = logout()><img src="https://img.icons8.com/dusk/64/logout-rounded.png"/></button>
+    <button class="prenotaCampo" onclick="prenotaCampo(dataGiorno)">PRENOTA UN CAMPO</button>
+    <div class="selectOrario">
+        <label class="labelOrarioSelect" for="orarioSelect">Seleziona orario:</label>
+        <select id="orarioSelect" onchange="selezionaFine(this.value)">
+    
         <option value="" disabled selected>Scegli un orario</option>
         <!-- Opzioni del select verranno popolate dinamicamente -->
     </select>
-    <label for="orarioSelectFinish">Seleziona orario di fine:</label>
-    <select id="orarioSelectFinish">
-        <!-- Opzioni del select verranno popolate dinamicamente -->
-    </select>
+    </div>
+    <div class="selectOrarioFinish">
+        <label class="labelOrarioSelectFinish" for="orarioSelectFinish">Seleziona orario di fine:</label>
+        <select id="orarioSelectFinish">
+            <!-- Opzioni del select verranno popolate dinamicamente -->
+        </select>
+    </div>
+    
     
 
     
-<!--     <p>nel seguente giorno sono state effettuate le seguenti preotazioni</p>
- -->    <div id = "elementi"></div>
+   <div id = "elementi"></div>
 
 
 
@@ -44,19 +52,16 @@
             
             console.log(dataToSend);
             try {
-            const response = await fetch('addPrenotazioneCalcetto.php', {
+            const response = await fetch('addPrenotazione.php', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
-                    // Altri eventuali header necessari possono essere aggiunti qui
+                    'Content-Type': 'application/json', 
                 },
-                body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
+                body: JSON.stringify(dataToSend), 
             });
 
-            // Gestione degli errori HTTP
             if (!response.ok) {
                 const errorData = await response.json();
-                // Controlla il codice di stato HTTP
                 if (response.status === 401) {
                     window.location.href = 'login.php';
                 }
@@ -85,18 +90,15 @@
             const response = await fetch('backendPrenotazioni.php', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
-                    // Altri eventuali header necessari possono essere aggiunti qui
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(dataToSend2), // Converte i dati in formato JSON
+                body: JSON.stringify(dataToSend2), 
             });
 
-            // Gestione degli errori HTTP
             if (!response.ok) {
                 throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
             }
 
-            // Controllo del tipo di contenuto
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
                 const responseData = await response.json();
@@ -108,7 +110,6 @@
                         console.log(responseArray);
                         stringaJSON = JSON.stringify(responseArray);
                         sessionStorage.setItem('responseArray', stringaJSON);
-                        // Dopo aver ottenuto i dati dal server
                          location.reload();
                      }
             } else {
@@ -122,13 +123,10 @@
      
         function createPage(dataGiorno){
             let responseData = "";
-/*             paragrafo.innerHTML = "";
- */            // Recupera i dati memorizzati nel sessionStorage
             let responseArrayJSON = sessionStorage.getItem('responseArray');
             let responseArray = JSON.parse(responseArrayJSON);
             let elementiDiv = document.getElementById('elementi');
             
-            // Fai qualcosa con i dati...
             console.log("caa");
             console.log(responseArray);
             console.log(dataGiorno);
@@ -141,7 +139,6 @@
 
             }
             else{if (elementiDiv) {
-                // Rimuovi tutti i figli del div utilizzando il loop while
                 while (elementiDiv.firstChild) {
                     elementiDiv.removeChild(elementiDiv.firstChild);
                 }
@@ -157,12 +154,9 @@
            
         
 
-            // Utilizza una promessa per garantire l'esecuzione di popolaOrari dopo il completamento del forEach
             new Promise((resolve, reject) => {
-                // Esegui il resolve() dopo aver completato il forEach
                 resolve();
             }).then(() => {
-                // Esegui popolaOrari(dataGiorno) dopo il completamento del forEach
                 popolaOrari(dataGiorno);
         });
     }
@@ -181,38 +175,33 @@
             console.log(dataToSend);
 
             try {
-            const response = await fetch('backendOrariCalcetto.php', {
+            const response = await fetch('backendOrari.php', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json', // Specifica il tipo di contenuto come JSON
-                    // Altri eventuali header necessari possono essere aggiunti qui
+                    'Content-Type': 'application/json', 
                 },
-                body: JSON.stringify(dataToSend), // Converte i dati in formato JSON
+                body: JSON.stringify(dataToSend), 
             });
 
-            // Gestione degli errori HTTP
             if (!response.ok) {
                 throw new Error(`Errore durante la richiesta al server. Codice di stato: ${response.status}`);
             } 
 
-            // Controllo del tipo di contenuto
              const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
                 responseData = await response.json();
                 console.log(responseData);
-                // Popola le opzioni della select con i risultati della fetch
                 const select = document.getElementById('orarioSelect');
-                // Ottieni tutte le opzioni nell'elemento select
                 const options = select.querySelectorAll('option');
 
-                // Mantieni la prima opzione e rimuovi tutte le altre opzioni
+      
                 for (let i = options.length - 1; i > 0; i--) {
                     options[i].remove();
                 }
-                // Itera sull'array associativo e aggiungi le ore disponibili come opzioni della select
+            
                 responseData["merged_result"].forEach(ora => {
                     const option = document.createElement('option');
-                    option.textContent = ora.ora; // Assumi che l'oggetto abbia una proprietà 'ora'
+                    option.textContent = ora.ora; 
                     select.appendChild(option);
             });
                 
@@ -252,10 +241,9 @@
             var minutes = Math.floor((seconds - (hours * 3600)) / 60);
             var secs = seconds - (hours * 3600) - (minutes * 60);
 
-            // Formatta il risultato
             newTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + secs.toString().padStart(2, '0');
             const option = document.createElement('option');
-            option.textContent = newTime; // Assumi che l'oggetto abbia una proprietà 'ora'
+            option.textContent = newTime; 
             selectFine.appendChild(option);
             console.log("Nuovo orario:", newTime);
 
@@ -267,11 +255,40 @@
             
             }}while(isPresent) 
     } 
+    function logout() {
+    // Mostra una finestra di conferma all'utente
+    const confermaLogout = confirm("Sei sicuro di voler effettuare il logout?");
+
+    // Se l'utente conferma, esegui il logout
+    if (confermaLogout) {
+        // Specifica l'URL a cui vuoi inviare la richiesta GET
+        const url = 'logout.php';
+
+        // Utilizza fetch per effettuare una richiesta GET all'URL specificato
+        fetch(url)
+            .then(response => {
+                // Verifica se la risposta è ok (status code 200)
+                if (response.ok) {
+                    console.log('Richiesta GET completata con successo');
+                } else {
+                    // Se la risposta non è ok, lancia un errore
+                    throw new Error(`Errore nella richiesta: ${response.status}`);
+                }
+            })
+            .catch(error => {
+                // Gestisci eventuali errori
+                console.error('Errore:', error);
+            });
+
+        // Reindirizza l'utente alla pagina di logout
+        window.location.href = 'index.php';
+    }
+}
     const dataGiornoJSON = sessionStorage.getItem('dataGiornoSelected');
     const dataGiorno = JSON.parse(dataGiornoJSON);
 
     
-     /* createPage(dataGiorno);  */
+    
      if (window.performance.navigation.type === window.performance.navigation.TYPE_RELOAD) {
             // La pagina è stata ricaricata
             createPage(dataGiorno);
@@ -287,7 +304,7 @@
 
    
     </script>
-    <a href="miePrenotazioni.php">Le mie prenotazioni</a>
-    <a href="cal.html">Indietro</a>
+    <a class="miePrenotazioni" href="miePrenotazioni.php">Le mie prenotazioni</a>
+    <a class="indietro" href="cal.html"> <img src="https://img.icons8.com/ink/48/000000/undo.png"/></a>
 </body>
 </html>

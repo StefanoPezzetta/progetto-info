@@ -1,85 +1,80 @@
 body {
-    background-color: #fce0a2; /* Sfondo chiaro */
-    color: #4A3B36; /* Colore del testo scuro */
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
+  background-color: #fce0a2;
+  color: #4A3B36;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
-/* Stile per l'intestazione */
 h1 {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 36px;
-    color: #8B4513; /* Colore scuro per il titolo */
+  text-align: center;
+  margin-top: 20px;
+  font-size: 36px;
+  color: #8B4513;
 }
 
-/* Stile per il contenitore delle card */
 .card-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap; /* Consente il wrapping delle card su più righe */
-    margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
 }
 
-/* Stile per ogni card */
 .card {
-    background-color: #8B4513;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-    margin: 15px;
-    padding: 20px;
-    width: 300px; /* Maggiore larghezza per la card */
-    height: 400px; /* Maggiore altezza per la card */
-    text-align: center;
+  background-color: #8B4513;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 15px;
+  padding: 20px;
+  width: 300px;
+  height: 400px;
+  text-align: center;
 }
 
-/* Stile per l'immagine nella card */
 .card img {
-    width: 100%; /* L'immagine occupa la larghezza della card */
-    height: 60%; /* Maggiore altezza per l'immagine */
-    border-radius: 8px 8px 0 0; /* Angoli arrotondati solo in alto */
+  width: 100%;
+  height: 60%;
+  border-radius: 8px 8px 0 0;
 }
 
-/* Stile per il pulsante nella card */
 .card button {
-    padding: 10px 20px;
-    background-color: #fce0a2;
-    color: #000000;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.5s ease; /* Add transition for background color and transform */
-  }
-  
- .card button:hover {
-    background-color: #8B4513;
-    border-color: #8B4513;
-    transform: scale(1.15); /* Scale the button slightly on hover */
-  }
-  .titolo{
-    color: #fce0a2;
-  }
-  .logout{
-    position: absolute;
-    background-color: #fce0a2;
-    border: #fce0a2;
-    right: 54px;
-    top: 20px;
-  }
-  .indietro{
-    padding: 10px 20px;
-    background-color: #8B4513;
-    color: #fff;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.5s ease; /* Add transition for background color and transform */
-    position: absolute;
-    top: 650px;
-    right: 54px;
-    top: 560px;
-  }
+  padding: 10px 20px;
+  background-color: #fce0a2;
+  color: #000000;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.5s ease;
+}
 
-/* Stile per il pulsante al passaggio del mouse */
+.card button:hover {
+  background-color: #8B4513;
+  border-color: #8B4513;
+  transform: scale(1.15);
+}
+
+.titolo {
+  color: #fce0a2;
+}
+
+.logout {
+  position: fixed;
+  background-color: #fce0a2;
+  border: #fce0a2;
+  right: 54px;
+  top: 20px;
+}
+
+.indietro {
+  padding: 10px 20px;
+  background-color: #8B4513;
+  color: #fff;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.5s ease;
+  position: fixed;
+  top: 20px;
+  left: 30px;
+}
