@@ -1,82 +1,98 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-  }
-
-  .container {
-    background-color: #8B4513;
-    border-radius: 10px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-  }
-
-  #calendario {
-    border-collapse: collapse;
-    width: 300px;
-    margin: auto;
-    background-color: #8B4513; /* Sfondo marrone per il calendario */
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #fce0a2; /* Sfondo chiaro per la pagina */
 }
 
+/* Stile per il contenitore del calendario */
+.container {
+  background-color: #8B4513; /* Marrone scuro per il contenitore */
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+/* Stile per il calendario */
+#calendario {
+  border-collapse: collapse;
+  width: 600px; /* Larghezza del calendario */
+  margin: auto;
+  background-color: #8B4513; /* Marrone scuro per il calendario */
+}
+
+/* Stile per le celle (th e td) del calendario */
 #calendario th,
 #calendario td {
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    border: 1px solid #ddd;
-    color: white; /* Colore del testo bianco per contrastare con lo sfondo */
+  width: 80px; /* Larghezza delle celle */
+  height: 60px; /* Altezza delle celle */
+  text-align: center;
+  border: 1px solid #B8A18C; /* Bordo marrone chiaro */
+  color: white; /* Testo bianco per contrastare con lo sfondo */
 }
 
+/* Stile per le intestazioni delle colonne (th) */
 #calendario th {
-    background-color: #8B4513; /* Sfondo marrone per i giorni della settimana */
-    font-weight: bold;
+  background-color: #8B4513; /* Marrone scuro per le intestazioni */
+  font-weight: bold;
 }
 
+/* Stile per le celle dei giorni (td) */
 #calendario td {
-    cursor: pointer;
-    background-color: #F2E6D8; /* Sfondo chiaro per le caselle dei giorni */
+  cursor: pointer;
+  background-color: #D2B48C; /* Marrone chiaro per le celle dei giorni */
+  color: #8B4513; /* Testo marrone scuro per le celle dei giorni */
 }
 
+/* Stile al passaggio del mouse sulle celle dei giorni */
 #calendario td:hover {
-    background-color: #E0C8B6; /* Sfondo chiaro più scuro al passaggio del mouse */
+  background-color: #C19A6B; /* Marrone intermedio al passaggio del mouse */
 }
 
-  .button-container {
-    text-align: center;
-    margin-top: 20px;
-  }
+/* Stile per i pulsanti di navigazione */
+.button-container {
+  text-align: center;
+  margin-top: 20px;
+}
 
-  .button {
-    padding: 10px 20px;
-    margin: 0 5px;
-    border: none;
-    border-radius: 5px;
-    background-color: #4CAF50;
-    color: white;
-    cursor: pointer;
-  }
+.button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 5px;
+  background-color: #fce0a2; /* Verde per i pulsanti */
+  color: black;
+  cursor: pointer;
+  font-weight: bold; /* Testo in grassetto */
 
-  .button:hover {
-    background-color: #45a049;
-  }
+}
 
-  .month-year {
-    text-align: center;
-    margin-bottom: 10px;
-    font-size: 20px;
-  }
-  .sport-info {
-    position: fixed;
-    top: 0; /* Posiziona il div nella parte superiore della pagina */
-    left: 0; /* Puoi cambiare questa proprietà per posizionare il div a sinistra o a destra */
-    width: 100%; /* Puoi regolare questa proprietà per impostare la larghezza del div */
-    background-color: white; /* Imposta il colore di sfondo */
-    padding: 10px; /* Aggiunge del padding intorno al contenuto */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Aggiunge un'ombra per migliorare l'aspetto */
-    z-index: 1000; /* Imposta un valore di z-index alto per assicurarci che il div sia sopra altri elementi */
+
+.button:hover {
+  background-color: #8B4513; /* Verde più scuro al passaggio del mouse */
+}
+
+/* Stile per l'intestazione del mese e dell'anno */
+.month-year {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: white; /* Testo bianco per l'intestazione */
+}
+
+/* Stile per le informazioni sullo sport */
+.sport-info {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #8B4513;
+  color: #fce0a2;
+  padding: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
 }
